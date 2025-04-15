@@ -4,25 +4,28 @@ Este projeto é um sistema simples de gerenciamento para uma clínica veterinár
 
 ## Estrutura do Projeto
 
-clinica-veterinaria/ 
-├── src/ 
-│ └── clinicaVeterinaria/ 
-│ ├── modelo/ 
-│ │ ├── Entidade.java 
-│ │ ├── Animal.java 
-│ │ ├── Veterinario.java 
-│ │ ├── Consulta.java 
-│ │ └── ProcedimentoConsulta.java 
-│ ├── persistencia/ 
-│ │ ├── Persistente.java 
-│ │ ├── BancoDeDados.java 
-│ │ └── EntidadeNaoEncontradaException.java 
-│ ├── visao/ 
-│ │ ├── MenuPrincipal.java 
-│ │ ├── MenuAnimal.java 
-│ │ ├── MenuVeterinario.java 
-│ │ └── MenuConsulta.java 
-│ └── Programa.java 
+clinica-veterinaria/
+├── src/
+│   └── clinicaVeterinaria/
+│       ├── modelo/
+│       │   ├── Entidade.java
+│       │   ├── Animal.java
+│       │   ├── Veterinario.java
+│       │   ├── Consulta.java
+│       │   └── ProcedimentoConsulta.java
+│       │
+│       ├── persistencia/
+│       │   ├── Persistente.java
+│       │   ├── BancoDeDados.java
+│       │   └── EntidadeNaoEncontradaException.java
+│       │
+│       ├── visao/
+│       │   ├── MenuPrincipal.java
+│       │   ├── MenuAnimal.java
+│       │   ├── MenuVeterinario.java
+│       │   └── MenuConsulta.java
+│       │
+│       └── Programa.java
 └── README.md
 
 ## Como Compilar e Executar
@@ -35,17 +38,22 @@ clinica-veterinaria/
 
 1. Abra o terminal e navegue até a pasta raiz do projeto:
 
-   ```bash
-   cd /caminho/para/clinica-veterinaria
+```bash
+cd /caminho/para/clinica-veterinaria
+```
 
 2. Compile todas as classes. Supondo que seu código-fonte está na pasta src, execute:
 
+```bash
 javac -d bin src/clinicaVeterinaria/**/*.java
+```
 
 3. Execute o programa a partir da pasta bin:
 
+```bash
 cd bin
 java clinicaVeterinaria.Programa
+```
 
 ## Executando pela IDE
 
