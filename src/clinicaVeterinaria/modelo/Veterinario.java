@@ -60,13 +60,11 @@ public class Veterinario extends Entidade {
 
     @Override
     public String toString() {
-        return "Veterinario[" +
-                "id=" + getId() +
-                ", nome='" + nome + '\'' +
-                ", crmv='" + crmv + '\'' +
-                ", especialidade='" + especialidade + '\'' +
-                ", telefone='" + telefone + '\'' +
-                ", email='" + email + '\'' +
-                ']';
+        return  "   Id= " + getId() +
+                "\n   Nome= " + nome +
+                "\n   Crmv= " + crmv +
+                "\n   Especialidade= " + especialidade +
+                "\n   Telefone= " + telefone +
+                "\n   Email= " + email;
     }
 }

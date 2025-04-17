@@ -60,13 +60,11 @@ public class Cliente extends Entidade {
 
     @Override
     public String toString() {
-        return "Cliente[" +
-                "id=" + getId() +
-                ", nome='" + nome + '\'' +
-                ", telefone='" + telefone + '\'' +
-                ", email='" + email + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ']';
+        return  "   Id = " + getId() +
+                "\n   Nome = " + nome +
+                "\n   Telefone = " + telefone + 
+                "\n   Email = " + email + 
+                "\n   Cpf = " + cpf + 
+                "\n   Endereco = " + endereco;
     }
 }

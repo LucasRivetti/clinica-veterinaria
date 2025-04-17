@@ -2,12 +2,11 @@ package clinicaVeterinaria.modelo;
 
 public class Animal extends Entidade {
         private String nome; // Nome do animal
-        private String especie; // Espécie do animal (ex: cão, gato.)
-        private String raca; // Raça do animal (ex: Labrador, Persa.)
+        private String especie; // Espécie do animal (cão, gato.)
+        private String raca; // Raça do animal (Labrador, Persa.)
         private int idade;
         private String sexo; // Sexo do animal (ex: M, F)
         private Cliente dono;
-
 
     public Animal(int id, String nome, String especie, String raca, int idade, String sexo, Cliente dono) {
         super(id);
@@ -72,15 +71,12 @@ public class Animal extends Entidade {
 
     @Override
     public String toString() {
-        return "Animal[" +
-                "id=" + getId() +
-                ", nome='" + nome + '\'' +
-                ", especie='" + especie + '\'' +
-                ", raca='" + raca + '\'' +
-                ", idade=" + idade +
-                ", sexo='" + sexo + '\'' +
-                ", dono='" + (dono != null ? dono.getNome() : "null") + '\'' +
-                ']';
+        return  "   Id= " + getId() +
+                "\n   Nome = " + nome +
+                "\n   Especie = " + especie +
+                "\n   Raca = " + raca +
+                "\n   Idade = " + idade +
+                "\n   Sexo = " + sexo +
+                "\n   Dono = " + (dono != null ? dono.getNome() : "null");
     }
-
 }
