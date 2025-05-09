@@ -21,13 +21,14 @@ public class Persistente<T extends Entidade> {
         this.listaDeEntidades.remove(entidade);
     }
 
-   public void atualizar(T entidade) {
+   public void atualizar(T entidade) throws IdInexistenteExcecao {
         for (int i = 0; i < listaDeEntidades.size(); i++) {
             if (listaDeEntidades.get(i).getId() == entidade.getId()) {
                 listaDeEntidades.set(i, entidade);
-                break;
+                return;
             }
         }
+        throw new IdInexistenteExcecao("ID não encontrado: " + entidade.getId());
     }
 
     public T buscarPorId(int id) throws IdInexistenteExcecao {
@@ -39,7 +40,7 @@ public class Persistente<T extends Entidade> {
         throw new IdInexistenteExcecao("ID não encontrado: " + id);
     }
 
-     public List<T> listar() {
+     public List<T> listar() { //ver sobre deixar imodificavel
         return this.listaDeEntidades;
     }
 
