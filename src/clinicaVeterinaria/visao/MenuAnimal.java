@@ -19,7 +19,8 @@ public class MenuAnimal {
 
     public void exibirMenu() {
         int opcao;
-
+        System.out.print("\033[H\033[2J");   
+        System.out.flush();   
         do {
             System.out.println("\n--- Menu de Animais ---");
             System.out.println("1. Cadastrar animal");

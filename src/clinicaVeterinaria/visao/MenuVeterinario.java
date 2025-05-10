@@ -14,7 +14,8 @@ public class MenuVeterinario {
 
     public void exibirMenu() {
         Scanner scanner = new Scanner(System.in);
-        
+        System.out.print("\033[H\033[2J");   
+        System.out.flush();   
         while (true) {
             System.out.println("\n--- Menu Veterinário ---");
             System.out.println("1. Adicionar Veterinário");

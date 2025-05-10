@@ -15,7 +15,8 @@ public class MenuConsulta {
 
     public void exibirMenu() {
         Scanner scanner = new Scanner(System.in);
-
+        System.out.print("\033[H\033[2J");   
+        System.out.flush();   
         while (true) {
             System.out.println("\n--- Menu Consulta ---");
             System.out.println("1. Cadastrar Nova Consulta");
