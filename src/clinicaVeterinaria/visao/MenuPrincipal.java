@@ -14,8 +14,7 @@ public class MenuPrincipal {
     }
 
     public void exibirMenu() {
-        System.out.print("\033[H\033[2J");   
-        System.out.flush();   
+  
         while (true) {
             System.out.println("=====================================================================================");
             System.out.println(""" 
@@ -35,7 +34,8 @@ System.out.println("============================================================
             System.out.println("► 1. Menu Veterinário");
             System.out.println("► 2. Menu Animal");
             System.out.println("► 3. Menu Consulta");
-            System.out.println("► 4. Sair");
+            System.out.println("► 4. Menu Cliente");
+            System.out.println("► 5. Sair");
             System.out.print("► Escolha uma opção: ");
             int opcao = scanner.nextInt();
             scanner.nextLine(); 
@@ -44,18 +44,30 @@ System.out.println("============================================================
                 case 1:
                     MenuVeterinario menuVeterinario = new MenuVeterinario(bancoDeDados);
                     menuVeterinario.exibirMenu();
+                    System.out.print("\033[H\033[2J");   
+                    System.out.flush();   
                     break;
                 case 2:
                     MenuAnimal menuAnimal = new MenuAnimal(bancoDeDados);
                     menuAnimal.exibirMenu();
+                    System.out.print("\033[H\033[2J");   
+                    System.out.flush();   
                     break;
                 case 3:
                     MenuConsulta menuConsulta = new MenuConsulta(bancoDeDados);
                     menuConsulta.exibirMenu();
+                    System.out.print("\033[H\033[2J");   
+                    System.out.flush();   
                     break;
                 case 4:
+                    MenuCliente menuCliente = new MenuCliente(bancoDeDados);
+                    menuCliente.exibirMenu();
+                    System.out.print("\033[H\033[2J");   
+                    System.out.flush();   
+                    break;
+                case 5:
                     System.out.println("Saindo do sistema...");
-                    scanner.close(); 
+                    scanner.close();
                     return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
