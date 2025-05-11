@@ -1,7 +1,7 @@
 package clinicaVeterinaria.visao;
 
-import java.util.Scanner;
 import clinicaVeterinaria.persistencia.BancoDeDados;
+import java.util.Scanner;
 
 public class MenuPrincipal {
 
@@ -35,7 +35,8 @@ System.out.println("============================================================
             System.out.println("► 2. Menu Animal");
             System.out.println("► 3. Menu Consulta");
             System.out.println("► 4. Menu Cliente");
-            System.out.println("► 5. Sair");
+            System.out.println("► 5. Menu Procedimento");
+            System.out.println("► 6. Sair");
             System.out.print("► Escolha uma opção: ");
             int opcao = scanner.nextInt();
             scanner.nextLine(); 
@@ -66,6 +67,12 @@ System.out.println("============================================================
                     System.out.flush();   
                     break;
                 case 5:
+                    MenuProcedimento menuProcedimento = new MenuProcedimento(bancoDeDados);
+                    menuProcedimento.exibirMenu();
+                    System.out.print("\033[H\033[2J");   
+                    System.out.flush(); 
+                    break;
+                case 6:
                     System.out.println("Saindo do sistema...");
                     scanner.close();
                     return;
