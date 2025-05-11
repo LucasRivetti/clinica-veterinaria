@@ -55,6 +55,9 @@ public class MenuConsulta {
     }
 
     private void cadastrarConsulta(Scanner scanner) {
+        Animal animal = new Animal();
+        Veterinario veterinario = new Veterinario();
+        Cliente cliente = new Cliente();
         System.out.println("\nCadastrar Nova Consulta:");
 
         System.out.print("ID da Consulta: ");
@@ -65,7 +68,6 @@ public class MenuConsulta {
         int idAnimal = scanner.nextInt();
         scanner.nextLine();
         try{
-            Animal animal = new Animal();
             animal = bancoDeDados.getAnimais().buscarPorId(idAnimal);
         }catch (Exception e){
             System.out.println("Animal não encontrado.");
@@ -76,7 +78,6 @@ public class MenuConsulta {
         int idVeterinario = scanner.nextInt();
         scanner.nextLine();
         try{
-            Veterinario veterinario = new Veterinario();
             veterinario = bancoDeDados.getVeterinarios().buscarPorId(idVeterinario);
         }catch (Exception e){
             System.out.println("Veterinário não encontrado.");
@@ -87,7 +88,6 @@ public class MenuConsulta {
         int idCliente = scanner.nextInt();
         scanner.nextLine();
         try{
-            Cliente cliente = new Cliente();
             cliente = bancoDeDados.getClientes().buscarPorId(idCliente);
         }catch (Exception e){
             System.out.println("Cliente não encontrado.");
