@@ -18,14 +18,16 @@ public class MenuCliente {
         System.out.print("\033[H\033[2J");   
         System.out.flush();   
         while (true) {
-            System.out.println("\n--- Menu Cliente ---");
-            System.out.println("1. Adicionar Cliente");
-            System.out.println("2. Editar Cliente");
-            System.out.println("3. Remover Cliente");
-            System.out.println("4. Buscar por ID");
-            System.out.println("5. Listar Clientes");
-            System.out.println("6. Voltar");
+            System.out.println("///-\\\\\\\n|^   ^|\n|O   O|\n|  ~  |\n \\ O /\n  | |");
+            System.out.println("\n---*\033[1mMENU CLIENTE\033[0m*---");
+            System.out.println("► 1. Adicionar Cliente");
+            System.out.println("► 2. Editar Cliente");
+            System.out.println("► 3. Remover Cliente");
+            System.out.println("► 4. Buscar por ID");
+            System.out.println("► 5. Listar Clientes");
+            System.out.println("► 6. Voltar");
             System.out.print("Escolha uma opção: ");
+            System.out.println("\n----------------------");
             int opcao = scanner.nextInt();
             scanner.nextLine(); 
 
