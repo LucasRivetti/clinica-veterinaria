@@ -1,19 +1,19 @@
 package clinicaVeterinaria.modelo;
 
 public class ItemConsulta {
-    private String procedimento; // vacinação, exame, etc.
+    private Procedimento procedimento;
     private double preco;
 
-    public ItemConsulta(String procedimento, double preco) {
+    public ItemConsulta(Procedimento procedimento, double preco) {
         this.procedimento = procedimento;
         this.preco = preco;
     }
 
-    public String getProcedimento() {
+    public Procedimento getProcedimento() {
         return procedimento;
     }
 
-    public void setProcedimento(String procedimento) {
+    public void setProcedimento(Procedimento procedimento) {
         this.procedimento = procedimento;
     }
 
@@ -27,7 +27,7 @@ public class ItemConsulta {
 
     @Override
     public String toString() {
-        return  "   procedimento = " + procedimento +
-                "   preco = " + preco;
+        return  "   Procedimento = " + procedimento.getNome() +
+                "\n   Preço = " + preco;
     }
 }

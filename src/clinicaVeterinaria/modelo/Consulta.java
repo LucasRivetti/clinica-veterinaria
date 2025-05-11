@@ -12,7 +12,13 @@ public class Consulta extends Entidade {
     private String descricao;
     private List<ItemConsulta> itens;
 
-    public Consulta(int id, Cliente cliente, Veterinario veterinario, Animal animal, Date dataHora, String descricao) {
+    public Consulta() {
+        super();
+        this.itens = new ArrayList<>();
+    }
+
+    public Consulta(int id, Cliente cliente, Veterinario veterinario,
+                    Animal animal, Date dataHora, String descricao) {
         super(id);
         this.cliente = cliente;
         this.veterinario = veterinario;
@@ -22,16 +28,44 @@ public class Consulta extends Entidade {
         this.itens = new ArrayList<>();
     }
 
-    public void adicionarItem(ItemConsulta item) {
-        itens.add(item);
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void removerItem(ItemConsulta item) {
-        itens.remove(item);
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public double calcularValorTotal() {
-        return itens.stream().mapToDouble(ItemConsulta::getPreco).sum();
+    public Veterinario getVeterinario() {
+        return veterinario;
+    }
+
+    public void setVeterinario(Veterinario veterinario) {
+        this.veterinario = veterinario;
+    }
+
+    public Animal getAnimal() {
+        return animal;
+    }
+
+    public void setAnimal(Animal animal) {
+        this.animal = animal;
+    }
+
+    public Date getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(Date dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public List<ItemConsulta> getItens() {
@@ -40,6 +74,18 @@ public class Consulta extends Entidade {
 
     public void setItens(List<ItemConsulta> itens) {
         this.itens = itens;
+    }
+
+    public void adicionarItem(ItemConsulta item) {
+        this.itens.add(item);
+    }
+
+    public void removerItem(ItemConsulta item) {
+        this.itens.remove(item);
+    }
+
+    public double calcularValorTotal() {
+        return itens.stream().mapToDouble(ItemConsulta::getPreco).sum();
     }
 
     @Override
