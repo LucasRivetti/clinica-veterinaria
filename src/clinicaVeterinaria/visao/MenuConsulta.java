@@ -1,13 +1,13 @@
 package clinicaVeterinaria.visao;
 
+import clinicaVeterinaria.modelo.*;
 import clinicaVeterinaria.persistencia.BancoDeDados;
 import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
-import clinicaVeterinaria.modelo.*;
-
 import java.util.Scanner;
 
 public class MenuConsulta {
 
+    @SuppressWarnings("FieldMayBeFinal")
     private BancoDeDados bancoDeDados;
 
     public MenuConsulta(BancoDeDados bancoDeDados) {
@@ -59,6 +59,7 @@ public class MenuConsulta {
         Animal animal = new Animal();
         Veterinario veterinario = new Veterinario();
         Cliente cliente = new Cliente();
+        Procedimento procedimento = new Procedimento();
         System.out.println("\nCadastrar Nova Consulta:");
 
         System.out.print("ID da Consulta: ");
@@ -95,11 +96,21 @@ public class MenuConsulta {
             return;
         }
 
+        System.out.print("ID do Procedimento: ");
+        int idProcedimento = scanner.nextInt();
+        scanner.nextLine();
+        try{
+            procedimento = bancoDeDados.getProcedimentos().buscarPorId(idProcedimento);
+        }catch (Exception e){
+            System.out.println("Procedimento não encontrado.");
+            return;
+        }
+
         System.out.print("Descrição: ");
         String descricao = scanner.nextLine();
 
 
-        Consulta consulta = new Consulta(id, cliente, veterinario, animal, new java.util.Date(), descricao);
+        Consulta consulta = new Consulta(id, cliente, veterinario, animal, new java.util.Date(), procedimento, descricao);
 
         bancoDeDados.getConsultas().adicionar(consulta);
         System.out.println("Consulta cadastrada com sucesso!");
@@ -109,6 +120,7 @@ public class MenuConsulta {
         Animal novoanimal = new Animal();
         Veterinario novoveterinario = new Veterinario();
         Cliente novocliente = new Cliente();
+        Procedimento procedimento = new Procedimento();
         System.out.println("Digite o ID da consulta a ser editada:");
         int idConsulta = scanner.nextInt();
         scanner.nextLine();
@@ -128,7 +140,7 @@ public class MenuConsulta {
         System.out.println("deixe vazio para manter o valor atual:");
         System.out.println("Digite os novos dados da consulta:");
 
-    System.out.println("Nova descrição (atual: " + consulta.getDescricao() + "): ");
+        System.out.println("Nova descrição (atual: " + consulta.getDescricao() + "): ");
         String novaDescricao = scanner.nextLine();
         if (!novaDescricao.isEmpty()) {
             consulta.setDescricao(novaDescricao);
