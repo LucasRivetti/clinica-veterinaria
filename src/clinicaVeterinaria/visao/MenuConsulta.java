@@ -19,22 +19,34 @@ public class MenuConsulta {
         System.out.flush();   
         while (true) {
             System.out.println("\n--- Menu Consulta ---");
-            System.out.println("1. Cadastrar Nova Consulta");
-            System.out.println("2. Listar Consultas");
-            System.out.println("3. Sair");
+            System.out.println("1. Adicionar Consulta");
+            System.out.println("2. Editar Consulta");
+            System.out.println("3. Remover Consulta");
+            System.out.println("4. Buscar Consulta por ID");
+            System.out.println("5. Listar Consulta");
+            System.out.println("6. Voltar");
             System.out.print("Escolha uma opção: ");
             int opcao = scanner.nextInt();
             scanner.nextLine(); 
 
-            switch (opcao) {
+             switch (opcao) {
                 case 1:
                     cadastrarConsulta(scanner);
                     break;
                 case 2:
-                    listarConsultas();
+                    editarConsulta(scanner);
                     break;
                 case 3:
-                    System.out.println("Saindo para o menu principal...");
+                    removerConsulta(scanner);
+                    break;
+                case 4:
+                    buscarConsultaPorId(scanner);
+                    break;
+                case 5:
+                    listarConsultas();
+                    break;
+                case 6:
+                    System.out.println("Voltando ao menu principal...");
                     return;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
