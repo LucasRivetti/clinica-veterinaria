@@ -154,11 +154,9 @@ public class MenuVeterinario {
 
     private void listarVeterinarios() {
         System.out.println("\n--- Lista de Veterinários ---");
-        String veterinariosList = bancoDeDados.getVeterinarios().toString();
-        if (veterinariosList.isEmpty()) {
-            System.out.println("Não há veterinários cadastrados.");
-        } else {
-            System.out.println(veterinariosList);
+        for (Veterinario vet : bancoDeDados.getVeterinarios().listar()) {
+            System.out.println(vet);
+            System.out.println("-----------------------------\n");
         }
     }
 }
