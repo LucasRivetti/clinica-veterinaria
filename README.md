@@ -1,66 +1,67 @@
 # Clínica Veterinária
 
-Este projeto é um sistema simples de gerenciamento para uma clínica veterinária, desenvolvido em Java utilizando conceitos de Programação Orientada a Objetos (POO). O projeto organiza o código em pacotes (`modelo`, `persistencia`, `visao`) e utiliza uma interface de linha de comando para interação com o usuário.
+**Trabalho desenvolvido para a disciplina Programação Modular, do professor Matheus Viana.**
+
+**Membros da equipe**:  
+- Lucas Rivetti
+- Jose Faria  
+- Augusto Cezar  
+- Lucas Campelo  
+
+Este projeto é um sistema simples de gerenciamento para uma clínica veterinária, utilizando Java e interface de linha de comando (CLI).
+
+## Funcionalidades Principais
+
+- Cadastro, edição, remoção e listagem de **Clientes**  
+- Cadastro, edição, remoção e listagem de **Veterinários**  
+- Cadastro, edição, remoção e listagem de **Animais**  
+- Cadastro, edição, remoção e listagem de **Consultas**, com itens de procedimento e cálculo de valor total  
+
+## Tecnologias Utilizadas
+
+- Java 8+  
+- IDEs compatíveis (Eclipse, IntelliJ IDEA, VS Code)  
+- Sistema de build simples via linha de comando (javac + java)  
 
 ## Estrutura do Projeto
 
 clinica-veterinaria/
-├── src/
-│   └── clinicaVeterinaria/
-│       ├── modelo/
-│       │   ├── Entidade.java
-│       │   ├── Animal.java
-│       │   ├── Veterinario.java
-│       │   ├── Consulta.java
-│       │   └── ProcedimentoConsulta.java
-│       │
-│       ├── persistencia/
-│       │   ├── Persistente.java
-│       │   ├── BancoDeDados.java
-│       │   └── EntidadeNaoEncontradaException.java
-│       │
-│       ├── visao/
-│       │   ├── MenuPrincipal.java
-│       │   ├── MenuAnimal.java
-│       │   ├── MenuVeterinario.java
-│       │   └── MenuConsulta.java
-│       │
-│       └── Programa.java
-└── README.md
+└── src/
+    └── clinicaVeterinaria/
+        ├── modelo/
+        │   ├── Entidade.java
+        │   ├── Cliente.java
+        │   ├── Veterinario.java
+        │   ├── Animal.java
+        │   ├── Procedimento.java
+        │   ├── Consulta.java
+        │   └── ItemConsulta.java
+        ├── persistencia/
+        │   ├── Persistente.java
+        │   ├── BancoDeDados.java
+        │   └── IdInexistenteExcecao.java
+        ├── visao/
+        │   ├── MenuPrincipal.java
+        │   ├── MenuCliente.java
+        │   ├── MenuVeterinario.java
+        │   ├── MenuAnimal.java
+        │   ├── MenuConsulta.java
+        │   └── TesteConsulta.java
+        └── Programa.java
 
-## Como Compilar e Executar
-
-### Pré-requisitos
-- Java Development Kit (JDK) instalado (versão 8 ou superior)
-- Uma IDE Java (VScode, IntelliJ) ou o terminal/linha de comando para compilar e executar
-
-### Compilando pelo Terminal
-
-1. Abra o terminal e navegue até a pasta raiz do projeto:
+## Compilação e Execução
 
 ```bash
-cd /caminho/para/clinica-veterinaria
-```
-
-2. Compile todas as classes. Supondo que seu código-fonte está na pasta src, execute:
-
-```bash
+# Compilar todos os fontes em src para a pasta bin
 javac -d bin src/clinicaVeterinaria/**/*.java
-```
 
-3. Execute o programa a partir da pasta bin:
-
-```bash
+# Executar a aplicação
 cd bin
 java clinicaVeterinaria.Programa
 ```
 
 ## Executando pela IDE
 
-Importe o projeto como um "Java Project" na sua IDE favorita.
-
-Certifique-se de que o JDK esteja corretamente configurado.
-
-Localize a classe Programa.java no pacote clinicaVeterinaria e execute o método main.
-
-A interface de linha de comando será iniciada no console da IDE.
+1. Importe o projeto como um "Java Project".
+2. Configure o JDK no seu ambiente.
+3. Execute o método `main` da classe `clinicaVeterinaria.Programa`.
