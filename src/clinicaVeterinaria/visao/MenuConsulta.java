@@ -1,6 +1,7 @@
 package clinicaVeterinaria.visao;
 
 import clinicaVeterinaria.persistencia.BancoDeDados;
+import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
 import clinicaVeterinaria.modelo.*;
 
 import java.util.Scanner;
@@ -105,11 +106,88 @@ public class MenuConsulta {
     }
 
     private void editarConsulta(Scanner scanner) {
-        System.out.println("\nimplementar:");
+        Animal novoanimal = new Animal();
+        Veterinario novoveterinario = new Veterinario();
+        Cliente novocliente = new Cliente();
+        System.out.println("Digite o ID da consulta a ser editada:");
+        int idConsulta = scanner.nextInt();
+        scanner.nextLine();
+
+        Consulta consulta;
+        try {
+            consulta = bancoDeDados.getConsultas().buscarPorId(idConsulta);
+            if (consulta == null) {
+                System.out.println("Consulta não encontrada.");
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar consulta. Certifique-se de inserir um ID válido.");
+            return;
+        }
+        System.out.println("Consulta encontrada: " + consulta.toString());
+        System.out.println("deixe vazio para manter o valor atual:");
+        System.out.println("Digite os novos dados da consulta:");
+
+    System.out.println("Nova descrição (atual: " + consulta.getDescricao() + "): ");
+        String novaDescricao = scanner.nextLine();
+        if (!novaDescricao.isEmpty()) {
+            consulta.setDescricao(novaDescricao);
+        }
+
+        System.out.println("Digite o novo ID do animal (atual: " + consulta.getAnimal().getId() + "): ");
+        int novoIdAnimal = scanner.nextInt();
+        scanner.nextLine();
+        if (novoIdAnimal != 0) {
+            try {
+                novoanimal = bancoDeDados.getAnimais().buscarPorId(novoIdAnimal);
+                    consulta.setAnimal(novoanimal);
+            } catch (Exception e) {
+                System.out.println("Animal não encontrado.");
+            }
+        }
+        System.out.println("Digite o novo ID do veterinário (atual: " + consulta.getVeterinario().getId() + "): ");
+        int novoIdVeterinario = scanner.nextInt();
+        scanner.nextLine();
+        if (novoIdVeterinario != 0) {
+            try {
+            novoveterinario = bancoDeDados.getVeterinarios().buscarPorId(novoIdVeterinario);
+                consulta.setVeterinario(novoveterinario);
+            } catch (Exception e) {
+                System.out.println("Veterinário não encontrado.");
+            }
+        }
+
+        System.out.println("Digite o novo ID do cliente (atual: " + consulta.getCliente().getId() + "): ");
+        int novoIdCliente = scanner.nextInt();
+        scanner.nextLine();
+        if (novoIdCliente != 0) {
+            try {
+               novocliente = bancoDeDados.getClientes().buscarPorId(novoIdCliente);
+                consulta.setCliente(novocliente);
+            } catch (Exception e) {
+                System.out.println("Cliente não encontrado.");
+            }
+        }
+        try{
+        bancoDeDados.getConsultas().atualizar(consulta);
+            System.out.println("Consulta editada com sucesso!");
+        }catch (IdInexistenteExcecao e) {
+            System.out.println("Erro: Consulta não encontrada.");
+        }
     }
 
     private void removerConsulta(Scanner scanner) {
-        System.out.println("\nimplementar:");
+        System.out.println("Digite o id da consulta a ser removida:");
+        int idConsulta = scanner.nextInt();
+        scanner.nextLine();
+        try {
+            bancoDeDados.getConsultas().remover(idConsulta);
+            System.out.println("Consulta removida com sucesso!");
+        } catch (IdInexistenteExcecao e) {
+            System.out.println("Erro: Consulta não encontrada.");
+        }
+
+
     }
 
     private void buscarConsultaPorId(Scanner scanner) {
