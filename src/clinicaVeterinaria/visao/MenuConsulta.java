@@ -70,6 +70,33 @@ public class MenuConsulta {
         System.out.println("Consulta cadastrada com sucesso!");
     }
 
+    private void editarConsulta(Scanner scanner) {
+        System.out.println("\nimplementar:");
+    }
+
+    private void removerConsulta(Scanner scanner) {
+        System.out.println("\nimplementar:");
+    }
+
+    private void buscarConsultaPorId(Scanner scanner) {
+        System.out.println("\nBuscar Consulta por ID:");
+        try {
+            System.out.print("ID da Consulta: ");
+            int id = scanner.nextInt();
+            scanner.nextLine(); 
+            Consulta consulta = bancoDeDados.getConsultas().buscarPorId(id);
+            if (consulta != null) {
+                System.out.println("Consulta encontrada: " + consulta.toString());
+            } else {
+                System.out.println("Consulta não encontrada.");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar consulta. Certifique-se de inserir um ID válido.");
+            scanner.nextLine();
+        }
+    }
+
+
     private void listarConsultas() {
         System.out.println("\nListar Consultas:");
         System.out.println(bancoDeDados.getConsultas().toString());

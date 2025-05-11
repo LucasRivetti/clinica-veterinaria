@@ -54,7 +54,7 @@ public class MenuCliente {
         }
     }
 
-    private void adicionarCliente(Scanner scanner) {
+    public void adicionarCliente(Scanner scanner) {
         System.out.println("Digite o ID do Cliente:");
         int id = scanner.nextInt();
         scanner.nextLine(); 
@@ -87,25 +87,37 @@ public class MenuCliente {
         try {
             Cliente cliente = bancoDeDados.getClientes().buscarPorId(id);
             
+            System.out.println("Cliente encontrado: " + cliente);
+            System.out.println("Deixe o campo vazio para manter o valor atual.");
             System.out.println("Digite o novo nome do Cliente:");
             String nome = scanner.nextLine();
-            cliente.setNome(nome);
+            if (!nome.isEmpty()) {
+                cliente.setNome(nome);
+            }
 
             System.out.println("Digite o novo telefone do Cliente:");
             String telefone = scanner.nextLine();
-            cliente.setTelefone(telefone);
+            if (!telefone.isEmpty()) {
+                cliente.setTelefone(telefone);
+            }
 
             System.out.println("Digite o novo email do Cliente:");
             String email = scanner.nextLine();
-            cliente.setEmail(email);
+            if (!email.isEmpty()) {
+                cliente.setEmail(email);
+            }
 
             System.out.println("Digite o novo CPF do Cliente:");
             String cpf = scanner.nextLine();
-            cliente.setCpf(cpf);
+            if (!cpf.isEmpty()) {
+                cliente.setCpf(cpf);
+            }
 
             System.out.println("Digite o novo endereço do Cliente:");
             String endereco = scanner.nextLine();
-            cliente.setEndereco(endereco);
+            if (!endereco.isEmpty()) {
+                cliente.setEndereco(endereco);
+            }
 
             bancoDeDados.getClientes().atualizar(cliente);
             System.out.println("Cliente editado com sucesso!");

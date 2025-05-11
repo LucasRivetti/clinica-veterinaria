@@ -21,44 +21,44 @@ public class MenuAnimal {
         int opcao;
         System.out.print("\033[H\033[2J");   
         System.out.flush();   
-        do {
-            System.out.println("\n--- Menu de Animais ---");
-            System.out.println("1. Cadastrar animal");
-            System.out.println("2. Listar animais");
-            System.out.println("3. Buscar animal por ID");
-            System.out.println("4. Remover animal");
-            System.out.println("5. Atualizar animal");
-            System.out.println("0. Voltar");
+       while (true) {
+            System.out.println("\n--- Menu Animal ---");
+            System.out.println("1. Adicionar Animal");
+            System.out.println("2. Editar Animal");
+            System.out.println("3. Remover Animal");
+            System.out.println("4. Buscar por ID");
+            System.out.println("5. Listar Animais");
+            System.out.println("6. Voltar");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine(); // limpar buffer
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
                     cadastrarAnimal();
                     break;
                 case 2:
-                    listarAnimais();
+                    editarAnimal();
                     break;
                 case 3:
-                    buscarAnimalPorId();
-                    break;
-                case 4:
                     removerAnimal();
                     break;
+                case 4:
+                    buscarAnimalPorId();
+                    break;
                 case 5:
-                    atualizarAnimal();
+                    listarAnimais();
                     break;
-                case 0:
-                    System.out.println("Voltando...");
-                    break;
+                case 6:
+                    System.out.println("Voltando ao menu principal...");
+                    return;
                 default:
                     System.out.println("Opção inválida.");
                     break;
             }
 
 
-        } while (opcao != 0);
+        }
     }
 
     private void cadastrarAnimal() {
@@ -86,25 +86,33 @@ public class MenuAnimal {
             System.out.print("ID do dono (cliente): ");
             int idCliente = scanner.nextInt();
             scanner.nextLine();
-
             Cliente dono = banco.getClientes().buscarPorId(idCliente);
-
+            
             Animal animal = new Animal(id, nome, especie, raca, idade, sexo, dono);
             banco.getAnimais().adicionar(animal);
             System.out.println("Animal cadastrado com sucesso!");
+
         } catch (IdInexistenteExcecao e) {
             System.out.println("Erro: Cliente não encontrado.");
+            System.out.println("Deseja Cadastar o Cliente? (S/N)");
+            String resposta = scanner.nextLine();
+            if (resposta.equalsIgnoreCase("S")) {
+                MenuCliente menuCliente = new MenuCliente(banco);
+                menuCliente.adicionarCliente(scanner);
+                System.out.println("Cliente cadastrado com sucesso!");
+                System.out.println("Deseja cadastrar o animal? (S/N)");
+                resposta = scanner.nextLine();
+                if (resposta.equalsIgnoreCase("S")) {
+                    cadastrarAnimal();
+                } else {
+                    System.out.println("Cadastro de animal cancelado.");
+                }
+            } else {
+                System.out.println("Cadastro de animal cancelado.");
+            }
         } catch (Exception e) {
             System.out.println("Erro ao cadastrar animal: " + e.getMessage());
-            scanner.nextLine(); // limpar buffer se erro
-        }
-    }
-
-    private void listarAnimais() {
-        System.out.println("\n--- Lista de Animais ---");
-        for (Animal animal : banco.getAnimais().listar()) {
-            System.out.println(animal);
-            System.out.println("-------------------------");
+            scanner.nextLine();
         }
     }
 
@@ -134,37 +142,69 @@ public class MenuAnimal {
         }
     }
 
-    private void atualizarAnimal() {
+    private void editarAnimal() {
         try {
-            System.out.print("Digite o ID do animal a atualizar: ");
+            System.out.print("Digite o ID do animal a editar: ");
             int id = scanner.nextInt();
             scanner.nextLine();
 
             Animal animal = banco.getAnimais().buscarPorId(id);
 
-            System.out.print("Novo nome (" + animal.getNome() + "): ");
-            animal.setNome(scanner.nextLine());
+            System.out.println("Animal encontrado: " + animal);
+            System.out.println("Deixe o campo vazio para manter o valor atual.");
+            System.out.print("Nome (" + animal.getNome() + "): ");
+            String nome = scanner.nextLine();
+            if (!nome.isEmpty()) {
+                animal.setNome(nome);
+            }
 
-            System.out.print("Nova espécie (" + animal.getEspecie() + "): ");
-            animal.setEspecie(scanner.nextLine());
+            System.out.print("Espécie (" + animal.getEspecie() + "): ");
+            String especie = scanner.nextLine();
+            if (!especie.isEmpty()) {
+                animal.setEspecie(especie);
+            }
 
-            System.out.print("Nova raça (" + animal.getRaca() + "): ");
-            animal.setRaca(scanner.nextLine());
+            System.out.print("Raça (" + animal.getRaca() + "): ");
+            String raca = scanner.nextLine();
+            if (!raca.isEmpty()) {
+                animal.setRaca(raca);
+            }
 
-            System.out.print("Nova idade (" + animal.getIdade() + "): ");
-            animal.setIdade(scanner.nextInt());
-            scanner.nextLine();
+            System.out.print("Idade (" + animal.getIdade() + "): ");
+            String idadeInput = scanner.nextLine();
+            if (!idadeInput.isEmpty()) {
+                int idade = Integer.parseInt(idadeInput);
+                animal.setIdade(idade);
+            }
 
-            System.out.print("Novo sexo (" + animal.getSexo() + "): ");
-            animal.setSexo(scanner.nextLine());
+            System.out.print("Sexo (" + animal.getSexo() + "): ");
+            String sexo = scanner.nextLine();
+            if (!sexo.isEmpty()) {
+                animal.setSexo(sexo);
+            }
+
+            System.out.print("ID do dono (cliente) (" + animal.getDono().getId() + "): ");
+            String idClienteInput = scanner.nextLine();
+            if (!idClienteInput.isEmpty()) {
+                int idCliente = Integer.parseInt(idClienteInput);
+                Cliente dono = banco.getClientes().buscarPorId(idCliente);
+                animal.setDono(dono);
+            }
 
             banco.getAnimais().atualizar(animal);
             System.out.println("Animal atualizado com sucesso!");
-
         } catch (IdInexistenteExcecao e) {
             System.out.println("Erro: Animal não encontrado.");
         } catch (Exception e) {
-            System.out.println("Erro ao atualizar: " + e.getMessage());
+            System.out.println("Erro ao editar: " + e.getMessage());
+        }
+    }
+
+    private void listarAnimais() {
+        System.out.println("\n--- Lista de Animais ---");
+        for (Animal animal : banco.getAnimais().listar()) {
+            System.out.println(animal);
+            System.out.println("-------------------------\n");
         }
     }
 }

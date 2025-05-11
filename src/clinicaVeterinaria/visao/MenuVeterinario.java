@@ -87,25 +87,37 @@ public class MenuVeterinario {
         try {
             Veterinario veterinario = bancoDeDados.getVeterinarios().buscarPorId(id);
             
+            System.out.println("Veterinário encontrado: " + veterinario);
+            System.out.println("Deixe o campo vazio para manter o valor atual.");
             System.out.println("Digite o novo nome do Veterinário:");
             String nome = scanner.nextLine();
-            veterinario.setNome(nome);
+            if (!nome.isEmpty()) {
+                veterinario.setNome(nome);
+            }
 
             System.out.println("Digite o novo CRMV do Veterinário:");
             String crmv = scanner.nextLine();
-            veterinario.setCrmv(crmv);
+            if (!crmv.isEmpty()) {
+                veterinario.setCrmv(crmv);
+            }
 
             System.out.println("Digite a nova especialidade do Veterinário:");
             String especialidade = scanner.nextLine();
-            veterinario.setEspecialidade(especialidade);
+            if (!especialidade.isEmpty()) {
+                veterinario.setEspecialidade(especialidade);
+            }
 
             System.out.println("Digite o novo telefone do Veterinário:");
             String telefone = scanner.nextLine();
-            veterinario.setTelefone(telefone);
+            if (!telefone.isEmpty()) {
+                veterinario.setTelefone(telefone);
+            }
 
             System.out.println("Digite o novo email do Veterinário:");
             String email = scanner.nextLine();
-            veterinario.setEmail(email);
+            if (!email.isEmpty()) {
+                veterinario.setEmail(email);
+            }
 
             bancoDeDados.getVeterinarios().atualizar(veterinario);
             System.out.println("Veterinário editado com sucesso!");
