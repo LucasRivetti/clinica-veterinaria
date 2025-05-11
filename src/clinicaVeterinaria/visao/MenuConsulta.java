@@ -1,7 +1,7 @@
 package clinicaVeterinaria.visao;
 
 import clinicaVeterinaria.persistencia.BancoDeDados;
-import clinicaVeterinaria.modelo.Consulta;
+import clinicaVeterinaria.modelo.*;
 
 import java.util.Scanner;
 
@@ -61,10 +61,44 @@ public class MenuConsulta {
         int id = scanner.nextInt();
         scanner.nextLine(); 
 
+        System.out.print("ID do Animal: ");
+        int idAnimal = scanner.nextInt();
+        scanner.nextLine();
+        try{
+            Animal animal = new Animal();
+            animal = bancoDeDados.getAnimais().buscarPorId(idAnimal);
+        }catch (Exception e){
+            System.out.println("Animal não encontrado.");
+            return;
+        }   
+        
+        System.out.print("ID do Veterinário: ");
+        int idVeterinario = scanner.nextInt();
+        scanner.nextLine();
+        try{
+            Veterinario veterinario = new Veterinario();
+            veterinario = bancoDeDados.getVeterinarios().buscarPorId(idVeterinario);
+        }catch (Exception e){
+            System.out.println("Veterinário não encontrado.");
+            return;
+        }
+
+        System.out.print("ID do Cliente: ");
+        int idCliente = scanner.nextInt();
+        scanner.nextLine();
+        try{
+            Cliente cliente = new Cliente();
+            cliente = bancoDeDados.getClientes().buscarPorId(idCliente);
+        }catch (Exception e){
+            System.out.println("Cliente não encontrado.");
+            return;
+        }
+
         System.out.print("Descrição: ");
         String descricao = scanner.nextLine();
 
-        Consulta consulta = new Consulta(id, null, null, null, new java.util.Date(), descricao);
+
+        Consulta consulta = new Consulta(id, cliente, veterinario, animal, new java.util.Date(), descricao);
 
         bancoDeDados.getConsultas().adicionar(consulta);
         System.out.println("Consulta cadastrada com sucesso!");
