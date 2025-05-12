@@ -22,8 +22,17 @@ public class MenuAnimal {
         System.out.print("\033[H\033[2J");   
         System.out.flush();   
        while (true) {
-            System.out.println("/^-----^\\\nV  o o  V\n |  Y  |\n  \\ Q /\n  / - \\\n  |    \\\n  |     \\     )\n  || (___\\====");
-            System.out.println("\n---*\033[1mMENU ANIMAL\033[0m*---");
+            System.out.println(
+    "    /^-----^\\\n" +
+    "    V  o o  V\n" +
+    "     |  Y  |\n" +
+    "      \\ Q /\n" +
+    "      / - \\\n" +
+    "      |    \\\n" +
+    "      |     \\     )\n" +
+    "      || (___\\===="
+);
+            System.out.println("\n---*\033[1m MENU ANIMAL \033[0m*---");
             System.out.println("► 1. Adicionar Animal");
             System.out.println("► 2. Editar Animal");
             System.out.println("► 3. Remover Animal");

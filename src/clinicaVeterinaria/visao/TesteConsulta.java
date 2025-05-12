@@ -12,6 +12,9 @@ import java.util.Date;
 public class TesteConsulta {
     public static void main(String[] args) {
 
+        Procedimento procVacina = new Procedimento(1, "Vacinação antirrábica", 80.0);
+        Procedimento procExame = new Procedimento(2, "Exame de sangue", 120.0);
+
         Cliente cliente = new Cliente(
             1,
             "Lucas Rivetti",
@@ -46,12 +49,9 @@ public class TesteConsulta {
             veterinario,
             animal,
             new Date(),
+            procVacina,
             "Consulta de rotina e vacinação."
         );
-
-
-        Procedimento procVacina = new Procedimento(1, "Vacinação antirrábica", 80.0);
-        Procedimento procExame = new Procedimento(2, "Exame de sangue", 120.0);
 
         consulta.adicionarItem(new ItemConsulta(procVacina, procVacina.getPreco()));
         consulta.adicionarItem(new ItemConsulta(procExame, procExame.getPreco()));

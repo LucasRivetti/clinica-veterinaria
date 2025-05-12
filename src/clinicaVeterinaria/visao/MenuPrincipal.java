@@ -14,6 +14,8 @@ public class MenuPrincipal {
     }
 
     public void exibirMenu() {
+        
+        int bdinicializado = 0;
   
         while (true) {
             System.out.println("=====================================================================================");
@@ -37,6 +39,7 @@ System.out.println("============================================================
             System.out.println("► 4. Menu Cliente");
             System.out.println("► 5. Menu Procedimento");
             System.out.println("► 6. Sair");
+            System.out.println("► 7. Banco de Dados Teste");
             System.out.print("► Escolha uma opção: ");
             int opcao = scanner.nextInt();
             scanner.nextLine(); 
@@ -76,6 +79,17 @@ System.out.println("============================================================
                     System.out.println("Saindo do sistema...");
                     scanner.close();
                     return;
+                case 7:
+                    if (bdinicializado == 0) {
+                        TesteBd testeBd = new TesteBd(bancoDeDados);
+                        testeBd.inicializarBanco(bancoDeDados);
+                        System.out.println("Banco de dados inicializado com sucesso!");
+                        bdinicializado = 1;
+                        break;
+                    } else {
+                        System.out.println("Banco de dados já inicializado.");
+                        break;
+                    }
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
             }

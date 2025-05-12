@@ -21,7 +21,7 @@ public class MenuProcedimento {
         System.out.flush();
 
         while (true) {
-            System.out.println("\n---* \033[1mMENU PROCEDIMENTO\033[0m *---");
+            System.out.println("\n---* \033[1m MENU PROCEDIMENTO \033[0m *---");
             System.out.println("► 1. Adicionar Procedimento");
             System.out.println("► 2. Editar Procedimento");
             System.out.println("► 3. Remover Procedimento");
