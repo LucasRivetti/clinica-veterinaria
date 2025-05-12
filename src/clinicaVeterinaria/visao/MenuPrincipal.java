@@ -83,7 +83,11 @@ System.out.println("============================================================
                     if (bdinicializado == 0) {
                         TesteBd testeBd = new TesteBd(bancoDeDados);
                         testeBd.inicializarBanco(bancoDeDados);
+
+                        System.out.print("\033[H\033[2J");   
+                        System.out.flush();   
                         System.out.println("Banco de dados inicializado com sucesso!");
+                        System.out.println("\n");
                         bdinicializado = 1;
                         break;
                     } else {
@@ -91,6 +95,8 @@ System.out.println("============================================================
                         break;
                     }
                 default:
+                    System.out.print("\033[H\033[2J");   
+                    System.out.flush();   
                     System.out.println("Opção inválida. Tente novamente.");
             }
         }
