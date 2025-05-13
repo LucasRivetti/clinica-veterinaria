@@ -1,10 +1,10 @@
 package clinicaVeterinaria.visao;
 
-import clinicaVeterinaria.visao.*;
-import clinicaVeterinaria.persistencia.*;
 import clinicaVeterinaria.modelo.*;
-
+import clinicaVeterinaria.persistencia.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class TesteBd {
@@ -47,6 +47,10 @@ public class TesteBd {
             "M",
             cliente
         );
+        
+        List<ItemConsulta> itensConsulta = new ArrayList<>();
+        ItemConsulta itemProcVacina = new ItemConsulta(procVacina, procVacina.getPreco());
+        itensConsulta.add(itemProcVacina);
 
         Consulta consulta = new Consulta(
             1,
@@ -54,7 +58,7 @@ public class TesteBd {
             veterinario,
             animal,
             new Date(),
-            procVacina,
+            itensConsulta,
             "Consulta de rotina e vacinação."
         );
 
