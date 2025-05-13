@@ -115,7 +115,13 @@ public class MenuConsulta {
         
             try {
                 Procedimento procedimento = bancoDeDados.getProcedimentos().buscarPorId(idProcedimento);
-
+                System.out.print("Alterar o Valor do procedimento? (S/N): ");
+                String resposta = scanner.nextLine();
+                if (resposta.equalsIgnoreCase("N")) {
+                    ItemConsulta item = new ItemConsulta(procedimento, procedimento.getPreco());
+                    itensConsulta.add(item);
+                    continue;
+                }
                 System.out.print("Valor do procedimento: ");
                 double valor = scanner.nextDouble();
                 scanner.nextLine();
