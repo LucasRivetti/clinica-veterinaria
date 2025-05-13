@@ -77,6 +77,14 @@ public class MenuAnimal {
             System.out.print("ID do animal: ");
             int id = scanner.nextInt();
             scanner.nextLine();
+            
+            try {
+                if (banco.getAnimais().buscarPorId(id) != null) {
+                System.out.println("Erro: ID já existente.");
+                return;
+                } catch (IdInexistenteExcecao e) {
+                }
+            }
 
             System.out.print("Nome: ");
             String nome = scanner.nextLine();

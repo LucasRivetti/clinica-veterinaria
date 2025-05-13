@@ -65,7 +65,15 @@ public class MenuConsulta {
 
         System.out.print("ID da Consulta: ");
         int id = scanner.nextInt();
-        scanner.nextLine(); 
+        scanner.nextLine();
+
+        try {
+            if (bancoDeDados.getConsultas().buscarPorId(id) != null) {
+                System.out.println("Erro: ID já existente.");
+                return;
+            }
+        } catch (IdInexistenteExcecao e) {
+        }
 
         System.out.print("ID do Animal: ");
         int idAnimal = scanner.nextInt();

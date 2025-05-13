@@ -59,7 +59,15 @@ public class MenuCliente {
     public void adicionarCliente(Scanner scanner) {
         System.out.println("Digite o ID do Cliente:");
         int id = scanner.nextInt();
-        scanner.nextLine(); 
+        scanner.nextLine();         
+
+        try {
+            if (bancoDeDados.getClientes().buscarPorId(id) != null) {
+                System.out.println("Erro: ID já existente.");
+                return;
+            }
+        } catch (IdInexistenteExcecao e) {
+        }
 
         System.out.println("Digite o nome do Cliente:");
         String nome = scanner.nextLine();

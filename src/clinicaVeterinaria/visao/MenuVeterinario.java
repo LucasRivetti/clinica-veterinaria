@@ -58,7 +58,15 @@ public class MenuVeterinario {
     private void adicionarVeterinario(Scanner scanner) {
         System.out.println("Digite o ID do Veterinário:");
         int id = scanner.nextInt();
-        scanner.nextLine(); 
+        scanner.nextLine();
+
+        try {
+            if (bancoDeDados.getVeterinarios().buscarPorId(id) != null) {
+                System.out.println("Erro: ID já existente.");
+                return;
+            }
+        } catch (IdInexistenteExcecao e) {
+        }
 
         System.out.println("Digite o nome do Veterinário:");
         String nome = scanner.nextLine();

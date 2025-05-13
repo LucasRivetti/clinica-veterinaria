@@ -63,6 +63,14 @@ public class MenuProcedimento {
             int id = scanner.nextInt();
             scanner.nextLine();
 
+            try {
+                if (banco.getProcedimentos().buscarPorId(id) != null) {
+                    System.out.println("Erro: ID já existente.");
+                    return;
+                }
+            } catch (IdInexistenteExcecao e) {
+            }
+
             System.out.print("Nome do procedimento: ");
             String nome = scanner.nextLine();
 
