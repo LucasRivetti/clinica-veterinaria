@@ -6,8 +6,9 @@ import clinicaVeterinaria.modelo.Consulta;
 import clinicaVeterinaria.modelo.ItemConsulta;
 import clinicaVeterinaria.modelo.Procedimento;
 import clinicaVeterinaria.modelo.Veterinario;
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TesteConsulta {
     public static void main(String[] args) {
@@ -43,13 +44,15 @@ public class TesteConsulta {
             cliente
         );
 
+        List<ItemConsulta> itensConsulta = new ArrayList<>();
+
         Consulta consulta = new Consulta(
             1,
             cliente,
             veterinario,
             animal,
             new Date(),
-            procVacina,
+            itensConsulta, 
             "Consulta de rotina e vacinação."
         );
 
