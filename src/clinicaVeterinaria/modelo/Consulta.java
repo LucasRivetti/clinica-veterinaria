@@ -9,7 +9,6 @@ public class Consulta extends Entidade {
     private Veterinario veterinario;
     private Animal animal;
     private Date dataHora;
-    private Procedimento procedimento;
     private String descricao;
     private List<ItemConsulta> itens;
 
@@ -19,16 +18,15 @@ public class Consulta extends Entidade {
     }
 
     public Consulta(int id, Cliente cliente, Veterinario veterinario,
-                    Animal animal, Date dataHora, Procedimento procedimento, String descricao) {
+                    Animal animal, Date dataHora, List<ItemConsulta> itens, String descricao) {
         super(id);
         this.cliente = cliente;
         this.veterinario = veterinario;
         this.animal = animal;
         this.dataHora = dataHora;
-        this.procedimento = procedimento;
         this.descricao = descricao;
-        this.itens = new ArrayList<>();
-    }
+        this.itens = itens;
+    } 
 
     public Cliente getCliente() {
         return cliente;
@@ -62,14 +60,6 @@ public class Consulta extends Entidade {
         this.dataHora = dataHora;
     }
 
-     public Procedimento getProcedimento() {
-        return procedimento;
-    }
-
-    public void setProcedimento(Procedimento procedimento) {
-        this.procedimento = procedimento;
-    }
-
     public String getDescricao() {
         return descricao;
     }
@@ -100,13 +90,20 @@ public class Consulta extends Entidade {
 
     @Override
     public String toString() {
-        return  "   Id = " + getId() +
+        String resultado =  "   Id = " + getId() +
                 "\n   Cliente = " + cliente.getNome() +
                 "\n   Veterinario = " + veterinario.getNome() +
                 "\n   Animal = " + animal.getNome() +
-                "\n   Procedimento = " + procedimento.getNome() +
                 "\n   DataHora = " + dataHora +
-                "\n   Descricao = " + descricao +
-                "\n   ValorTotal = " + procedimento.getPreco();
+                "\n   Descricao = " + descricao;
+
+        for (ItemConsulta item : itens) {
+            resultado += "\n   Procedimento = " + item.getProcedimento().getNome() +
+                        " (R$ " + item.getPreco() + ")";
+        }
+
+        resultado += "\n   ValorTotal = " + calcularValorTotal();
+
+        return resultado;
     }
 }
