@@ -80,10 +80,10 @@ public class MenuAnimal {
             
             try {
                 if (banco.getAnimais().buscarPorId(id) != null) {
-                System.out.println("Erro: ID já existente.");
-                return;
-                } catch (IdInexistenteExcecao e) {
+                    System.out.println("Erro: ID já existente.");
+                    return;
                 }
+            } catch (IdInexistenteExcecao e) {
             }
 
             System.out.print("Nome: ");
