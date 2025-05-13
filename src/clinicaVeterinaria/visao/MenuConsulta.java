@@ -3,6 +3,8 @@ package clinicaVeterinaria.visao;
 import clinicaVeterinaria.modelo.*;
 import clinicaVeterinaria.persistencia.BancoDeDados;
 import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuConsulta {
@@ -59,7 +61,6 @@ public class MenuConsulta {
         Animal animal = new Animal();
         Veterinario veterinario = new Veterinario();
         Cliente cliente = new Cliente();
-        Procedimento procedimento = new Procedimento();
         System.out.println("\nCadastrar Nova Consulta:");
 
         System.out.print("ID da Consulta: ");
@@ -96,13 +97,30 @@ public class MenuConsulta {
             return;
         }
 
-        System.out.print("ID do Procedimento: ");
-        int idProcedimento = scanner.nextInt();
-        scanner.nextLine();
-        try{
-            procedimento = bancoDeDados.getProcedimentos().buscarPorId(idProcedimento);
-        }catch (Exception e){
-            System.out.println("Procedimento não encontrado.");
+        List<ItemConsulta> itensConsulta = new ArrayList<>();
+        while (true) {
+            System.out.print("ID do Procedimento (ou 0 para finalizar): ");
+            int idProcedimento = scanner.nextInt();
+            scanner.nextLine();
+
+            if (idProcedimento == 0) break;
+        
+            try {
+                Procedimento procedimento = bancoDeDados.getProcedimentos().buscarPorId(idProcedimento);
+
+                System.out.print("Valor do procedimento: ");
+                double valor = scanner.nextDouble();
+                scanner.nextLine();
+
+                ItemConsulta item = new ItemConsulta(procedimento, valor);
+                itensConsulta.add(item);
+            } catch (Exception e) {
+                System.out.println("Procedimento não encontrado.");
+            }
+        }
+
+        if (itensConsulta.isEmpty()) {
+            System.out.println("A consulta deve ter pelo menos um procedimento.");
             return;
         }
 
@@ -110,7 +128,8 @@ public class MenuConsulta {
         String descricao = scanner.nextLine();
 
 
-        Consulta consulta = new Consulta(id, cliente, veterinario, animal, new java.util.Date(), procedimento, descricao);
+        Consulta consulta = new Consulta(id, cliente, veterinario, animal, new java.util.Date(), itensConsulta, descricao);
+
 
         bancoDeDados.getConsultas().adicionar(consulta);
         System.out.println("Consulta cadastrada com sucesso!");
@@ -120,7 +139,6 @@ public class MenuConsulta {
         Animal novoanimal = new Animal();
         Veterinario novoveterinario = new Veterinario();
         Cliente novocliente = new Cliente();
-        Procedimento procedimento = new Procedimento();
         System.out.println("Digite o ID da consulta a ser editada:");
         int idConsulta = scanner.nextInt();
         scanner.nextLine();
@@ -180,6 +198,56 @@ public class MenuConsulta {
                 System.out.println("Cliente não encontrado.");
             }
         }
+
+        List<ItemConsulta> itensConsulta = consulta.getItens(); 
+        while (true) {
+            System.out.println("Deseja adicionar ou remover um procedimento?");
+            System.out.println("1. Adicionar Procedimento");
+            System.out.println("2. Remover Procedimento");
+            System.out.println("3. Finalizar Edição");
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            if (opcao == 1) {
+                System.out.print("ID do Procedimento: ");
+                int idProcedimento = scanner.nextInt();
+                scanner.nextLine();
+
+                try {
+                    Procedimento procedimento = bancoDeDados.getProcedimentos().buscarPorId(idProcedimento);
+                    System.out.print("Valor do procedimento: ");
+                    double valor = scanner.nextDouble();
+                    scanner.nextLine();
+
+                    ItemConsulta item = new ItemConsulta(procedimento, valor);
+                    itensConsulta.add(item);
+                    consulta.setItens(itensConsulta); 
+                } catch (Exception e) {
+                    System.out.println("Procedimento não encontrado.");
+                }
+            } else if (opcao == 2) {
+                System.out.print("ID do Procedimento a remover: ");
+                int idProcedimento = scanner.nextInt();
+                scanner.nextLine();
+                boolean removido = false;
+                for (ItemConsulta item : itensConsulta) {
+                    if (item.getProcedimento().getId() == idProcedimento) {
+                        itensConsulta.remove(item);
+                        removido = true;
+                        break;
+                    }
+                }
+                if (removido) {
+                    System.out.println("Procedimento removido com sucesso.");
+                    consulta.setItens(itensConsulta); 
+                } else {
+                    System.out.println("Procedimento não encontrado.");
+                }
+            } else if (opcao == 3) {
+                break;
+            }
+        }
+
         try{
         bancoDeDados.getConsultas().atualizar(consulta);
             System.out.println("Consulta editada com sucesso!");
