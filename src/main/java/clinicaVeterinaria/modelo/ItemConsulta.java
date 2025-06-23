@@ -1,5 +1,5 @@
-package clinicaVeterinaria.modelo;
 
+package clinicaVeterinaria.modelo;
 public class ItemConsulta {
     private Procedimento procedimento;
     private double preco;

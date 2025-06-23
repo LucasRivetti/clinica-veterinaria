@@ -1,11 +1,12 @@
 package clinicaVeterinaria.visao;
 
-import clinicaVeterinaria.modelo.*;
-import clinicaVeterinaria.persistencia.BancoDeDados;
-import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import clinicaVeterinaria.modelo.*;
+import clinicaVeterinaria.persistencia.BancoDeDados;
+import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
 
 public class MenuConsulta {
 

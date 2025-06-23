@@ -1,7 +1,8 @@
 package clinicaVeterinaria.visao;
 
-import clinicaVeterinaria.persistencia.BancoDeDados;
 import java.util.Scanner;
+
+import clinicaVeterinaria.persistencia.BancoDeDados;
 
 public class MenuPrincipal {
 

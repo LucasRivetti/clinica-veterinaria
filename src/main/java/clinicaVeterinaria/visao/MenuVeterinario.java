@@ -1,6 +1,8 @@
+
 package clinicaVeterinaria.visao;
 
 import java.util.Scanner;
+
 import clinicaVeterinaria.modelo.Veterinario;
 import clinicaVeterinaria.persistencia.BancoDeDados;
 import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
