@@ -1,10 +1,12 @@
 clinicaVeterinaria\modelo\ItemConsulta.class
 clinicaVeterinaria\modelo\Cliente.class
 clinicaVeterinaria\Programa.class
+clinicaVeterinaria\visao\gui\MainWindow$1.class
 clinicaVeterinaria\modelo\Veterinario.class
 clinicaVeterinaria\visao\MenuCliente.class
 clinicaVeterinaria\visao\MenuPrincipal.class
 clinicaVeterinaria\modelo\Animal.class
+clinicaVeterinaria\visao\gui\ClientePanel$1.class
 clinicaVeterinaria\visao\MenuVeterinario.class
 clinicaVeterinaria\visao\MenuProcedimento.class
 clinicaVeterinaria\modelo\Procedimento.class
@@ -15,5 +17,7 @@ clinicaVeterinaria\persistencia\Persistente.class
 clinicaVeterinaria\visao\MenuAnimal.class
 clinicaVeterinaria\modelo\Consulta.class
 clinicaVeterinaria\visao\TesteConsulta.class
+clinicaVeterinaria\visao\gui\MainWindow.class
 clinicaVeterinaria\visao\MenuConsulta.class
+clinicaVeterinaria\visao\gui\ClientePanel.class
 clinicaVeterinaria\modelo\Entidade.class
