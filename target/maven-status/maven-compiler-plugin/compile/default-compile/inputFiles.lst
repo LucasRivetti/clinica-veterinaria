@@ -3,6 +3,7 @@ C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinic
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\modelo\Procedimento.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\modelo\ItemConsulta.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\visao\MenuProcedimento.java
+C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\visao\gui\VeterinarioPanel.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\modelo\Entidade.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\persistencia\BancoDeDados.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\visao\MenuCliente.java
@@ -16,6 +17,7 @@ C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinic
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\visao\gui\MainWindow.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\visao\MenuAnimal.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\visao\gui\ClientePanel.java
+C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\visao\gui\UIConstants.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\modelo\Animal.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\persistencia\Persistente.java
 C:\Users\Lucas Rivetti\Documents\GitHub\clinica-veterinaria\src\main\java\clinicaVeterinaria\visao\TesteBd.java
