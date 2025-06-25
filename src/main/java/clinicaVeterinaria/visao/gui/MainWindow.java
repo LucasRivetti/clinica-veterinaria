@@ -39,7 +39,7 @@ public class MainWindow extends JFrame {
         // aqui ta a base dos paineis, tudo isso ai e placeholder vao mudando conforme forem fazendo os paineis e tbm deixem essa porra mais bonita fiz so a base funcional
         mainPanel.add(new JLabel("Bem-vindo à Clínica Veterinária! Selecione uma opção no menu.", SwingConstants.CENTER), "Home");
         mainPanel.add(new ClientePanel(), "Clientes");
-        mainPanel.add(new JLabel("Painel Veterinários"), "Veterinários");
+        mainPanel.add(new VeterinarioPanel(), "Veterinários");
         mainPanel.add(new JLabel("Painel Animais"), "Animais");
         mainPanel.add(new JLabel("Painel Procedimentos"), "Procedimentos");
         mainPanel.add(new JLabel("Painel Consultas"), "Consultas");
