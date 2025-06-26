@@ -80,7 +80,7 @@ public class MainWindow extends JFrame {
         painelPrincipal.add(new PainelHome(this), "Home");
         painelPrincipal.add(new PainelClientes(bancoDeDados), "Clientes");
         painelPrincipal.add(new PainelVeterinarios(bancoDeDados), "Veterinários");
-        //painelPrincipal.add(new PainelAnimais(bancoDeDados), "Animais");
+        painelPrincipal.add(new PainelAnimais(bancoDeDados), "Animais");
         //painelPrincipal.add(new PainelProcedimentos(bancoDeDados), "Procedimentos");
         //painelPrincipal.add(new PainelConsultas(bancoDeDados), "Consultas");
 
