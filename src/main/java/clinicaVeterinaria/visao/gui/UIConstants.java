@@ -1,4 +1,3 @@
-// src/clinicaVeterinaria/visao/gui/UIConstants.java
 package clinicaVeterinaria.visao.gui;
 
 import java.awt.Color;
