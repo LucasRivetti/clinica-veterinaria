@@ -1,7 +1,7 @@
 package clinicaVeterinaria;
 
 import clinicaVeterinaria.persistencia.BancoDeDados;
-import clinicaVeterinaria.visao.MenuPrincipal;
+import clinicaVeterinaria.visao.InterfaceTerminal.MenuPrincipal;
 
 public class Programa {
     public static void main(String[] args) {

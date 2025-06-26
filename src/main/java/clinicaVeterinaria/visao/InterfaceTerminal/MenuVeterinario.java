@@ -1,5 +1,5 @@
 
-package clinicaVeterinaria.visao;
+package clinicaVeterinaria.visao.InterfaceTerminal;
 
 import java.util.Scanner;
 
