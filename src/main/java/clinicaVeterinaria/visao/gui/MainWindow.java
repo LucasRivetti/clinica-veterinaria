@@ -1,106 +1,189 @@
-// src/clinicaVeterinaria/visao/gui/MainWindow.java
 package clinicaVeterinaria.visao.gui;
 
+import clinicaVeterinaria.persistencia.BancoDeDados;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainWindow extends JFrame {
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
+    private static final int MENU_WIDTH     = 220; 
+    private static final int ANIMATION_STEP = 20; 
+    private static final int TIMER_DELAY_MS = 10;
+
+    public final BancoDeDados bancoDeDados = new BancoDeDados(); //banco de dados da aplicação estamos iniciando aqui para ser usado em outros painéis
+
+    // todo os componentes da janela principal, dividi eles em outros componentes para facilitar a manutenção e o entendimento do código pra vcs 
+    private CardLayout layoutCartoes; 
+    private JPanel painelPrincipal;
+    private MenuLateral painelLateral;
+    private BarraSuperior barraSuperior;
+    private boolean menuAberto = false; 
+    private Timer temporizadorAnimacao;
+    private int larguraAtual = 0;
+    private int larguraAlvo  = 0;
+    private String selecaoAtual = "Home"; 
 
     public MainWindow() {
-        setTitle("Clínica Veterinária");
+        super("Clínica Veterinária");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setLocationRelativeTo(null);
-
-        // aplica cor de fundo geral
+        setSize(900, 600);
+        setLocationRelativeTo(null); //
+        setLayout(new BorderLayout());
         getContentPane().setBackground(UIConstants.BACKGROUND);
 
-        // Barra de menu estilizada
-        JMenuBar menuBar = new JMenuBar();
-        menuBar.setBackground(UIConstants.SECONDARY);
-        menuBar.setForeground(UIConstants.WHITE);
+        inicializarTemporizador();
+        inicializarPainelLateral();
+        inicializarBarraSuperior();
+        inicializarPainelPrincipal();
+        atualizarSelecaoMenu("Home");
+    }
 
-        JMenu menu = new JMenu("Menu");
-        menu.setForeground(UIConstants.TEXT);
-
-        JMenuItem mCliente      = new JMenuItem("Clientes");
-        JMenuItem mVeterinario  = new JMenuItem("Veterinários");
-        JMenuItem mAnimal       = new JMenuItem("Animais");
-        JMenuItem mProcedimento = new JMenuItem("Procedimentos");
-        JMenuItem mConsulta     = new JMenuItem("Consultas");
-        for (JMenuItem item : new JMenuItem[]{mCliente, mVeterinario, mAnimal, mProcedimento, mConsulta}) {
-            item.setForeground(UIConstants.TEXT);
-            item.setBackground(UIConstants.SECONDARY);
-        }
-
-        menu.add(mCliente);
-        menu.add(mVeterinario);
-        menu.add(mAnimal);
-        menu.add(mProcedimento);
-        menu.add(mConsulta);
-        menuBar.add(menu);
-        setJMenuBar(menuBar);
-
-
-        cardLayout = new CardLayout();
-        mainPanel = new JPanel(cardLayout);
-        mainPanel.setBackground(UIConstants.BACKGROUND);
-
-          // aqui ta a base dos paineis, tudo isso ai e placeholder vao mudando conforme forem fazendo os paineis e tbm deixem essa porra mais bonita fiz so a base funcional
-        JLabel homeLabel = new JLabel(
-            "<html><div style='text-align:center;'>Bem-vindo à Clínica Veterinária!<br/>Selecione uma opção no menu.</div></html>",
-            SwingConstants.CENTER
-        );
-        homeLabel.setForeground(UIConstants.TEXT);
-        mainPanel.add(homeLabel, "Home");
-
-        ClientePanel clientePanel = new ClientePanel();
-        clientePanel.setBackground(UIConstants.WHITE);
-        mainPanel.add(clientePanel, "Clientes");
-
-        VeterinarioPanel vetPanel = new VeterinarioPanel();
-        vetPanel.setBackground(UIConstants.WHITE);
-        mainPanel.add(vetPanel, "Veterinários");
-
-        // placeholders
-        mainPanel.add(makePlaceholder("Painel Animais"), "Animais");
-        mainPanel.add(makePlaceholder("Painel Procedimentos"), "Procedimentos");
-        mainPanel.add(makePlaceholder("Painel Consultas"), "Consultas");
-
-        add(mainPanel, BorderLayout.CENTER);
-
-         // troca de painel quando tu clicar no menu sem ficar abrindo novas janelas
-        ActionListener switchPanel = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String cmd = e.getActionCommand();
-                cardLayout.show(mainPanel, cmd);
+    private void inicializarTemporizador() { // Inicializa o temporizador para animação do menu lateral dessa forma o menu lateral abre e fecha com animação
+        temporizadorAnimacao = new Timer(TIMER_DELAY_MS, e -> {
+            if (menuAberto) {
+                larguraAtual = Math.min(larguraAtual + ANIMATION_STEP, larguraAlvo);
+            } else {
+                larguraAtual = Math.max(larguraAtual - ANIMATION_STEP, 0);
             }
-        };
-        mCliente.addActionListener(switchPanel);
-        mVeterinario.addActionListener(switchPanel);
-        mAnimal.addActionListener(switchPanel);
-        mProcedimento.addActionListener(switchPanel);
-        mConsulta.addActionListener(switchPanel);
+            painelLateral.setPreferredSize(new Dimension(larguraAtual, getHeight())); 
+            painelLateral.revalidate();
+            if (larguraAtual == larguraAlvo || larguraAtual == 0) {
+                temporizadorAnimacao.stop();
+            }
+        });
     }
 
-    // método auxiliar para placeholders
-    private JPanel makePlaceholder(String text) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setBackground(UIConstants.WHITE);
-        JLabel lbl = new JLabel(text, SwingConstants.CENTER);
-        lbl.setForeground(UIConstants.TEXT);
-        p.add(lbl, BorderLayout.CENTER);
-        return p;
+    private void inicializarPainelLateral() { 
+        painelLateral = new MenuLateral(this);
+        painelLateral.setPreferredSize(new Dimension(0, getHeight()));
+        add(painelLateral, BorderLayout.WEST);
     }
 
-    public static void main(String[] args) {
+    private void inicializarBarraSuperior() {
+        barraSuperior = new BarraSuperior(this);
+        barraSuperior.btnHamburguer.addActionListener(e -> alternarMenu());
+        add(barraSuperior, BorderLayout.NORTH);
+    }
+
+    private void inicializarPainelPrincipal() {
+        layoutCartoes = new CardLayout();
+        painelPrincipal = new JPanel(layoutCartoes);
+        painelPrincipal.setBackground(UIConstants.BACKGROUND);
+
+        // Adiciona os painéis principais da aplicação deixei comentado ja que ainda não implementamos todos os painéis
+        // mas assim que implementarmos podemos descomentar e adicionar aqui que ja vai aparecer quando vcs rodarem
+        painelPrincipal.add(new PainelHome(this), "Home");
+        painelPrincipal.add(new PainelClientes(bancoDeDados), "Clientes");
+        painelPrincipal.add(new PainelVeterinarios(bancoDeDados), "Veterinários");
+        //painelPrincipal.add(new PainelAnimais(bancoDeDados), "Animais");
+        //painelPrincipal.add(new PainelProcedimentos(bancoDeDados), "Procedimentos");
+        //painelPrincipal.add(new PainelConsultas(bancoDeDados), "Consultas");
+
+        add(painelPrincipal, BorderLayout.CENTER);
+    }
+
+    private void alternarMenu() { 
+        menuAberto = !menuAberto; // serve para alterar o menu entre aberto e fechado
+        larguraAlvo = menuAberto ? MENU_WIDTH : 0;
+        temporizadorAnimacao.start();
+    }
+
+    public void atualizarSelecaoMenu(String nome) {
+        selecaoAtual = nome; 
+        for (JButton btn : painelLateral.getBotoesMenu()) {
+            if (btn.getText().equals(nome)) {
+                btn.setBackground(UIConstants.PRIMARY);
+                btn.setFont(btn.getFont().deriveFont(Font.BOLD));
+            } else {
+                btn.setBackground(UIConstants.SECONDARY);
+                btn.setFont(btn.getFont().deriveFont(Font.PLAIN));
+            }
+        }
+        layoutCartoes.show(painelPrincipal, nome);
+    }
+
+    public Icon loadIcon(String resourcePath) {  //busca o a imagem do ícone no caminho especificado e carrega ele como um ícone
+        URL url = getClass().getResource(resourcePath);
+        if (url == null) {
+            System.err.println("Ícone não encontrado: " + resourcePath);
+            return new ImageIcon(new BufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB));
+        }
+        return new ImageIcon(url);
+    }
+
+    public BufferedImage loadImage(String resourcePath) { 
+        try {
+            URL url = getClass().getResource(resourcePath);
+            if (url == null) {
+                System.err.println("Imagem não encontrada: " + resourcePath);
+                return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+            }
+            return ImageIO.read(url); // imageio lê a imagem do caminho especificado
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        }
+    }
+
+    public JButton criarBotaoMenu(String texto, Icon icone) { 
+        JButton b = new JButton(texto, icone);
+        b.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        b.setForeground(UIConstants.WHITE);
+        b.setBackground(UIConstants.SECONDARY);
+        b.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        b.setAlignmentX(Component.LEFT_ALIGNMENT);
+        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        b.setFocusPainted(false);
+        b.setHorizontalAlignment(SwingConstants.LEFT);
+        b.setIconTextGap(10);
+
+        b.addActionListener(e -> atualizarSelecaoMenu(texto));
+        b.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                b.setBackground(UIConstants.ACCENT);
+            }
+            @Override public void mouseExited(MouseEvent e) {
+                if (texto.equals(selecaoAtual)) {
+                    b.setBackground(UIConstants.PRIMARY);
+                } else {
+                    b.setBackground(UIConstants.SECONDARY);
+                }
+            }
+        });
+        return b;
+    }
+
+    // aqui ta toda a questao de responsividade da imagem que ta no fundo da janela principal
+    public static class ImagePanel extends JPanel {
+        private final Image image;
+        public ImagePanel(Image image) {
+            this.image = image;
+        }
+        @Override protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (image != null) {
+                int w = getWidth(), h = getHeight();
+                double imgRatio = (double) image.getWidth(this) / image.getHeight(this);
+                int drawW = w, drawH = (int) (w / imgRatio);
+                if (drawH > h) {
+                    drawH = h;
+                    drawW = (int) (h * imgRatio);
+                }
+                int x = (w - drawW) / 2, y = (h - drawH) / 2;
+                g.drawImage(image, x, y, drawW, drawH, this);
+            }
+        }
+    }
+
+    public static void main(String[] args) { // Método main para iniciar a aplicação apenas 
         SwingUtilities.invokeLater(() -> {
-            new MainWindow().setVisible(true);
+            MainWindow janela = new MainWindow();
+            janela.setVisible(true);
         });
     }
 }
