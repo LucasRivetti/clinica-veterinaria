@@ -4,9 +4,11 @@ import clinicaVeterinaria.modelo.Animal;
 import clinicaVeterinaria.modelo.Cliente;
 import clinicaVeterinaria.persistencia.BancoDeDados;
 import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
+import clinicaVeterinaria.visao.InterfaceTerminal.TesteBd;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.List;
 
@@ -15,11 +17,16 @@ public class PainelAnimais extends JPanel {
     private JTable tabela;
     private DefaultTableModel modeloTabela;
     private JTextField campoPesquisa;
+    private TableRowSorter<DefaultTableModel> organizador;
+
 
 
     public PainelAnimais(BancoDeDados banco) {
         this.banco = banco;
         setLayout(new BorderLayout());
+
+        TesteBd testeBd = new TesteBd(banco);
+        testeBd.inicializarBanco(banco);
 
         // Cabeçalho
         JLabel titulo = new JLabel("Gestão de Animais", SwingConstants.CENTER);
@@ -38,7 +45,6 @@ public class PainelAnimais extends JPanel {
 
         campoPesquisa = new JTextField();
         campoPesquisa.setToolTipText("Pesquisar por nome do animal ou ID");
-
 
         JButton btnPesquisar = new JButton("Pesquisar");
         JButton btnLimpar = new JButton("Limpar");
@@ -63,6 +69,9 @@ public class PainelAnimais extends JPanel {
             public boolean isCellEditable(int row, int col) { return false; }
         };
         tabela = new JTable(modeloTabela);
+        organizador = new TableRowSorter<>(modeloTabela);
+        tabela.setRowSorter(organizador);
+
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scroll = new JScrollPane(tabela);
         add(scroll, BorderLayout.CENTER);
@@ -109,6 +118,50 @@ public class PainelAnimais extends JPanel {
                 }
             }
         });
+
+        /* rapaziada a logica do botao pesquisar e a seguinte
+         * a parte do painel e organizacao la em cima voces podem copiar nos paineis de voces
+         * mas quanto a pesquisa, eu fiz assim, dentro do jframe a gente utiliza um tablerowsorter
+         * esse tablerowsorter eu chamo de organizador e ele conversa com o modelo tabela podendo filtrar ele
+         * o botao pesquisar ele faz com que esse organizador atraves de um filtro
+         * cada um dos filtros e o que vem ali do rowfilter.regexfilter
+         * eu coloquei alguns truques de regex que eu achei, tipo, o ^ significa que comeca com aquele numero
+         * e o (?i) e o case sensitive
+         * o botao limpar limpa e exclui tudo que ta na pesquisa
+        */
+
+        btnPesquisar.addActionListener(e -> {
+            String texto = campoPesquisa.getText().trim();
+            
+            if (texto.isEmpty()) {
+                organizador.setRowFilter(null);
+            } else {
+                try {
+                    int id = Integer.parseInt(texto);
+                    organizador.setRowFilter(RowFilter.orFilter(
+                        List.of(
+                            RowFilter.regexFilter("^" + id + "$", 0)
+                        )
+                    ));
+                } catch (NumberFormatException ex) {
+                    organizador.setRowFilter(RowFilter.orFilter(
+                        List.of(
+                            RowFilter.regexFilter("(?i)" + texto, 1),
+                            RowFilter.regexFilter("(?i)" + texto, 2),
+                            RowFilter.regexFilter("(?i)" + texto, 6)
+                        )
+                    ));
+                }
+            }
+        });
+
+        btnLimpar.addActionListener(e -> {
+            campoPesquisa.setText("");
+            organizador.setRowFilter(null);
+            atualizarTabela();
+        });
+
+
 
         atualizarTabela();
     }

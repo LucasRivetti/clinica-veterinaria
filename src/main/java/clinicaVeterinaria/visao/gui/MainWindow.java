@@ -1,6 +1,8 @@
 package clinicaVeterinaria.visao.gui;
 
 import clinicaVeterinaria.persistencia.BancoDeDados;
+import clinicaVeterinaria.visao.InterfaceTerminal.TesteBd;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
