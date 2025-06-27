@@ -1,7 +1,6 @@
 package clinicaVeterinaria.visao.gui;
 
 import clinicaVeterinaria.persistencia.BancoDeDados;
-import clinicaVeterinaria.visao.InterfaceTerminal.TesteBd;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -85,7 +84,7 @@ public class MainWindow extends JFrame {
         painelPrincipal.add(new PainelClientes(bancoDeDados), "Clientes");
         painelPrincipal.add(new PainelVeterinarios(bancoDeDados), "Veterinários");
         painelPrincipal.add(new PainelAnimais(bancoDeDados), "Animais");
-        //painelPrincipal.add(new PainelProcedimentos(bancoDeDados), "Procedimentos");
+        painelPrincipal.add(new PainelProcedimentos(bancoDeDados), "Procedimentos");
         //painelPrincipal.add(new PainelConsultas(bancoDeDados), "Consultas");
 
         add(painelPrincipal, BorderLayout.CENTER);
