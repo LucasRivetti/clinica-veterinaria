@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame {
     private static final int MENU_WIDTH     = 220; 
@@ -41,9 +42,11 @@ public class MainWindow extends JFrame {
         inicializarBarraSuperior();
         inicializarPainelPrincipal();
         atualizarSelecaoMenu("Home");
+        atalhos();
 
         pack();
         setLocationRelativeTo(null);
+        
     }
 
     private void inicializarTemporizador() { // Inicializa o temporizador para animação do menu lateral dessa forma o menu lateral abre e fecha com animação
@@ -108,6 +111,48 @@ public class MainWindow extends JFrame {
             }
         }
         layoutCartoes.show(painelPrincipal, nome);
+    }
+
+    public void atalhos() { // atalhos de teclado para selecionar a janela, crtl c e para clientes crtl v para veterinários, 
+                            //crtl a para animais, crtl p para procedimentos e crtl s para consultas.
+        InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getRootPane().getActionMap();
+
+        inputMap.put(KeyStroke.getKeyStroke("control C"), "clientes");
+        actionMap.put("clientes", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                atualizarSelecaoMenu("Clientes");
+            }
+        }
+        );
+        inputMap.put(KeyStroke.getKeyStroke("control V"), "veterinarios");
+        actionMap.put("veterinarios", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                atualizarSelecaoMenu("Veterinários");
+            }
+        }
+        );
+        inputMap.put(KeyStroke.getKeyStroke("control A"), "animais");
+        actionMap.put("animais", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                atualizarSelecaoMenu("Animais");
+            }
+        }
+        );
+        inputMap.put(KeyStroke.getKeyStroke("control P"), "procedimentos");
+        actionMap.put("procedimentos", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                atualizarSelecaoMenu("Procedimentos");
+            }
+        }
+        );  
+        inputMap.put(KeyStroke.getKeyStroke("control S"), "consultas");
+        actionMap.put("consultas", new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                atualizarSelecaoMenu("Consultas");
+            }
+        }
+        );
     }
 
     public Icon loadIcon(String resourcePath) {  //busca o a imagem do ícone no caminho especificado e carrega ele como um ícone
