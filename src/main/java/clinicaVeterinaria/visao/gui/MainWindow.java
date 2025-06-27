@@ -33,7 +33,6 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         super("Clínica Veterinária");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 600);
         setLocationRelativeTo(null); //
         setLayout(new BorderLayout());
         getContentPane().setBackground(UIConstants.BACKGROUND);
@@ -43,6 +42,9 @@ public class MainWindow extends JFrame {
         inicializarBarraSuperior();
         inicializarPainelPrincipal();
         atualizarSelecaoMenu("Home");
+
+        pack();
+        setLocationRelativeTo(null);
     }
 
     private void inicializarTemporizador() { // Inicializa o temporizador para animação do menu lateral dessa forma o menu lateral abre e fecha com animação
