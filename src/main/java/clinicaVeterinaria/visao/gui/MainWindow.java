@@ -1,6 +1,7 @@
 package clinicaVeterinaria.visao.gui;
 
 import clinicaVeterinaria.persistencia.BancoDeDados;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +32,6 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         super("Clínica Veterinária");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(900, 600);
         setLocationRelativeTo(null); //
         setLayout(new BorderLayout());
         getContentPane().setBackground(UIConstants.BACKGROUND);
@@ -41,6 +41,9 @@ public class MainWindow extends JFrame {
         inicializarBarraSuperior();
         inicializarPainelPrincipal();
         atualizarSelecaoMenu("Home");
+
+        pack();
+        setLocationRelativeTo(null);
     }
 
     private void inicializarTemporizador() { // Inicializa o temporizador para animação do menu lateral dessa forma o menu lateral abre e fecha com animação
@@ -80,8 +83,8 @@ public class MainWindow extends JFrame {
         painelPrincipal.add(new PainelHome(this), "Home");
         painelPrincipal.add(new PainelClientes(bancoDeDados), "Clientes");
         painelPrincipal.add(new PainelVeterinarios(bancoDeDados), "Veterinários");
-        //painelPrincipal.add(new PainelAnimais(bancoDeDados), "Animais");
-        //painelPrincipal.add(new PainelProcedimentos(bancoDeDados), "Procedimentos");
+        painelPrincipal.add(new PainelAnimais(bancoDeDados), "Animais");
+        painelPrincipal.add(new PainelProcedimentos(bancoDeDados), "Procedimentos");
         //painelPrincipal.add(new PainelConsultas(bancoDeDados), "Consultas");
 
         add(painelPrincipal, BorderLayout.CENTER);

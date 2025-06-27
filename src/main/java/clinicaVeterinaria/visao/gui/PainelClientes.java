@@ -6,13 +6,17 @@ import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 import java.awt.*;
 import java.util.List;
 
 public class PainelClientes extends JPanel {
     private final BancoDeDados banco;
+    private JTextField campoPesquisa;
     private JTable tabela;
     private DefaultTableModel modeloTabela;
+    private TableRowSorter<DefaultTableModel> organizador; 
 
     public PainelClientes(BancoDeDados banco) {
         this.banco = banco;
@@ -22,11 +26,48 @@ public class PainelClientes extends JPanel {
         JLabel titulo = new JLabel("Gestão de Clientes", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         titulo.setForeground(UIConstants.PRIMARY);
+        titulo.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
 
         JPanel header = new JPanel(new BorderLayout());
         header.setPreferredSize(new Dimension(0, 70));
         header.add(titulo, BorderLayout.CENTER);
-        add(header, BorderLayout.NORTH);
+        
+
+         // Imagem de cabeçalho
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/clientes.jpg"));
+        Image img = icon.getImage().getScaledInstance(350, 150, Image.SCALE_SMOOTH); 
+        JLabel labelImagem = new JLabel(new ImageIcon(img));
+        
+        // Auxiliar pro topo
+        JPanel painelTopo = new JPanel();
+        painelTopo.setLayout(new BoxLayout(painelTopo, BoxLayout.Y_AXIS));
+        labelImagem.setAlignmentX(Component.CENTER_ALIGNMENT);
+        painelTopo.add(header);
+        painelTopo.add(labelImagem); // Adiciona a imagem no topo do painel
+
+        add(painelTopo, BorderLayout.NORTH);
+
+        // Painel de pesquisa
+        JPanel painelPesquisa = new JPanel(new BorderLayout());
+        painelPesquisa.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        campoPesquisa = new JTextField();
+        campoPesquisa.setToolTipText("Pesquisar por nome do cliente ou ID");
+        
+
+        JButton btnPesquisar = new JButton("Pesquisar");
+        JButton btnLimpar = new JButton("Limpar");
+
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.add(btnPesquisar);
+        painelBotoes.add(btnLimpar);
+
+
+
+        painelPesquisa.add(new JLabel("Pesquisar:"), BorderLayout.WEST);
+        painelPesquisa.add(campoPesquisa, BorderLayout.CENTER);
+        painelPesquisa.add(painelBotoes, BorderLayout.EAST);
+        painelPesquisa.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));     
 
         // Tabela de clientes declarada com colunas fixas
         // e sem permitir edição direta
@@ -38,7 +79,17 @@ public class PainelClientes extends JPanel {
         tabela = new JTable(modeloTabela);
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Seleção de apenas uma linha por vez assim nao da pra editar ou excluir mais de um ao mesmo tempo 
         JScrollPane scroll = new JScrollPane(tabela); 
-        add(scroll, BorderLayout.CENTER);
+
+        organizador = new TableRowSorter<>(modeloTabela);
+        tabela.setRowSorter(organizador);
+        
+        JPanel centro = new JPanel();
+        centro.setLayout(new BoxLayout(centro, BoxLayout.Y_AXIS));
+        centro.add(painelPesquisa); // Adiciona a imagem no topo do painel
+        centro.add(Box.createVerticalStrut(20)); // Espaço entre a imagem e a tabela
+        centro.add(scroll); // Adiciona a tabela abaixo da imagem
+
+        add(centro, BorderLayout.CENTER); // Adiciona o painel central ao PainelClientes
 
         // Botões 
         JPanel botoes = new JPanel();
@@ -83,8 +134,41 @@ public class PainelClientes extends JPanel {
             }
         });
 
+        btnPesquisar.addActionListener(e -> {
+            String texto = campoPesquisa.getText().trim();
+            
+            if (texto.isEmpty()) {
+                organizador.setRowFilter(null);
+            } else {
+                try {
+                    int id = Integer.parseInt(texto);
+                    organizador.setRowFilter(RowFilter.orFilter(
+                        List.of(
+                            RowFilter.regexFilter("^" + id + "$", 0)
+                        )
+                    ));
+                } catch (NumberFormatException ex) {
+                    organizador.setRowFilter(RowFilter.orFilter(
+                        List.of(
+                            RowFilter.regexFilter("(?i)" + texto, 1),
+                            RowFilter.regexFilter("(?i)" + texto, 2),
+                            RowFilter.regexFilter("(?i)" + texto, 5)
+                        )
+                    ));
+                }
+            }
+        });
+
+        btnLimpar.addActionListener(e -> {
+            campoPesquisa.setText("");
+            organizador.setRowFilter(null);
+            atualizarTabela();
+        });
+
         atualizarTabela();
     }
+
+    
 
     private void atualizarTabela() { // Atualiza a tabela com os dados do banco de dados
         modeloTabela.setRowCount(0);

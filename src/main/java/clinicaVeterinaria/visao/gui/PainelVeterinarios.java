@@ -20,25 +20,13 @@ public class PainelVeterinarios extends JPanel {
         setLayout(new BorderLayout());
 
         // Header
-        JLabel title = new JLabel("Gestão de Veterinários", SwingConstants.CENTER);
-        title.setFont(title.getFont().deriveFont(18f));
-        title.setForeground(Color.black);
-
-        //Escolher uma foto pra colocar no painel de veterinarios
-
-        //ImageIcon icon = new ImageIcon(
-            //    Toolkit.getDefaultToolkit().getImage(
-          //              getClass().getResource("/images/veterinário.png")));
-        //Image img = icon.getImage().getScaledInstance(150, 100, Image.SCALE_SMOOTH);
-        //icon = new ImageIcon(img);
-        //JLabel photo = new JLabel(icon);
-        //photo.setHorizontalAlignment(SwingConstants.CENTER);
+         JLabel titulo = new JLabel("Gestão de Veterinarios", SwingConstants.CENTER);
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        titulo.setForeground(UIConstants.PRIMARY);
 
         JPanel header = new JPanel(new BorderLayout());
-        header.setPreferredSize(new Dimension(0, 140));
-        header.add(title, BorderLayout.NORTH);
-        //  header.add(photo, BorderLayout.CENTER);
-
+        header.setPreferredSize(new Dimension(0, 70));
+        header.add(titulo, BorderLayout.CENTER);
         add(header, BorderLayout.NORTH);
 
         String[] columns = { "ID", "Nome", "Telefone", "Email", "CRMv", "Especialidade" };
@@ -152,11 +140,23 @@ public class PainelVeterinarios extends JPanel {
                 String crmv = txtCrmv.getText();
                 String especialidade = txtEspecialidade.getText();
 
-                Veterinario vet = new Veterinario(id, nome, tel, email, crmv, especialidade);
+               if (nome.isEmpty() || tel.isEmpty() || email.isEmpty() || crmv.isEmpty() || especialidade.isEmpty()) { //se algum campo estiver vazio, exibe mensagem de erro
+                    JOptionPane.showMessageDialog(dialog, "Preencha todos os campos.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 if (c == null) {
-                    banco.getVeterinarios().adicionar(vet);
+                    List<Veterinario> veterinarios = banco.getVeterinarios().listar();
+                    for (Veterinario existente : veterinarios) {
+                        if (existente.getId() == id) {
+                            JOptionPane.showMessageDialog(dialog, "Já existe um veterinario com esse ID!", "ID duplicado", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+                    Veterinario vete = new Veterinario(id, nome, tel, email, crmv, especialidade);
+                    banco.getVeterinarios().adicionar(vete);
                 } else {
-                    banco.getVeterinarios().atualizar(vet);
+                    Veterinario vete = new Veterinario(id, nome, tel, email, crmv, especialidade);
+                    banco.getVeterinarios().atualizar(vete);
                 }
                 refreshTable();
                 dialog.dispose();
