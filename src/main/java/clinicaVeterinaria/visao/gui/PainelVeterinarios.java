@@ -5,7 +5,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-import clinicaVeterinaria.modelo.Cliente;
 import clinicaVeterinaria.modelo.Veterinario;
 import clinicaVeterinaria.persistencia.BancoDeDados;
 import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
