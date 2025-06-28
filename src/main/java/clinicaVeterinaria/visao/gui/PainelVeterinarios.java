@@ -192,11 +192,11 @@ public class PainelVeterinarios extends JPanel {
         dialog.add(txtNome);
         dialog.add(new JLabel("Telefone:"));
         dialog.add(txtTelefone);
-        dialog.add(new JLabel("Email:"));
+        dialog.add(new JLabel("Especialidade"));
         dialog.add(txtEmail);
         dialog.add(new JLabel("CRMv:"));
         dialog.add(txtCrmv);
-        dialog.add(new JLabel("Especialidade:"));
+        dialog.add(new JLabel("Email:"));
         dialog.add(txtEspecialidade);
 
         JButton btnSalvar = new JButton("Salvar");
