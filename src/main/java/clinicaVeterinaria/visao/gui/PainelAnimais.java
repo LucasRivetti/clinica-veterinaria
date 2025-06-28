@@ -32,14 +32,19 @@ public class PainelAnimais extends JPanel {
         JLabel titulo = new JLabel("Gestão de Animais", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         titulo.setForeground(UIConstants.PRIMARY);
+        titulo.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
 
         JPanel header = new JPanel(new BorderLayout());
         header.setPreferredSize(new Dimension(0, 70));
         header.add(titulo, BorderLayout.CENTER);
-        add(header, BorderLayout.NORTH);
-        
-        // painel pesquisa
 
+        //Imagem do cabeçalho
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/animais.jpg"));
+        Image img = icon.getImage().getScaledInstance(350, 150, Image.SCALE_SMOOTH); 
+        JLabel labelImagem = new JLabel(new ImageIcon(img));
+
+
+        // painel pesquisa
         JPanel painelPesquisa = new JPanel(new BorderLayout());
         painelPesquisa.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -58,7 +63,16 @@ public class PainelAnimais extends JPanel {
         painelPesquisa.add(new JLabel("Pesquisar:"), BorderLayout.WEST);
         painelPesquisa.add(campoPesquisa, BorderLayout.CENTER);
         painelPesquisa.add(painelBotoes, BorderLayout.EAST);
-        add(painelPesquisa, BorderLayout.NORTH);
+        
+
+         // Auxiliar pro topo
+        JPanel painelTopo = new JPanel();
+        painelTopo.setLayout(new BoxLayout(painelTopo, BoxLayout.Y_AXIS));
+        labelImagem.setAlignmentX(Component.CENTER_ALIGNMENT);
+        painelTopo.add(header);
+        painelTopo.add(labelImagem);
+        painelTopo.add(painelPesquisa); 
+        add(painelTopo, BorderLayout.NORTH);
         
 
         // Tabela de animais declarada com colunas fixas
