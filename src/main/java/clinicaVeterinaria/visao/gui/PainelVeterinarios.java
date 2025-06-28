@@ -2,17 +2,22 @@ package clinicaVeterinaria.visao.gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 import java.awt.*;
 import java.util.List;
 
+import clinicaVeterinaria.modelo.Cliente;
 import clinicaVeterinaria.modelo.Veterinario;
 import clinicaVeterinaria.persistencia.BancoDeDados;
 import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
 
 public class PainelVeterinarios extends JPanel {
     private BancoDeDados banco;
-    private JTable table;
-    private DefaultTableModel tableModel;
+    private JTable tabela;
+    private DefaultTableModel modeloTabela;
+    private JTextField campoPesquisa;
+    private TableRowSorter<DefaultTableModel> organizador; 
 
     // Agora recebe o banco pelo construtor dessa forma o painel veterinários pode ser usado em outros lugares
     public PainelVeterinarios(BancoDeDados banco) {
@@ -27,18 +32,52 @@ public class PainelVeterinarios extends JPanel {
         JPanel header = new JPanel(new BorderLayout());
         header.setPreferredSize(new Dimension(0, 70));
         header.add(titulo, BorderLayout.CENTER);
-        add(header, BorderLayout.NORTH);
 
-        String[] columns = { "ID", "Nome", "Telefone", "Email", "CRMv", "Especialidade" };
-        tableModel = new DefaultTableModel(columns, 0) {
+        //painel de pesquisa
+        JPanel painelPesquisa = new JPanel(new BorderLayout());
+        painelPesquisa.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        campoPesquisa = new JTextField();
+        campoPesquisa.setToolTipText("Pesquisar por nome do Veterinario, ID, Especialidade ou CRMv");
+        
+
+        JButton btnPesquisar = new JButton("Pesquisar");
+        JButton btnLimpar = new JButton("Limpar");
+
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.add(btnPesquisar);
+        painelBotoes.add(btnLimpar);
+
+        painelPesquisa.add(new JLabel("Pesquisar:"), BorderLayout.WEST);
+        painelPesquisa.add(campoPesquisa, BorderLayout.CENTER);
+        painelPesquisa.add(painelBotoes, BorderLayout.EAST);
+        painelPesquisa.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+
+         // Imagem de cabeçalho
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/veterinarios.jpg"));
+        Image img = icon.getImage().getScaledInstance(350, 150, Image.SCALE_SMOOTH); 
+        JLabel labelImagem = new JLabel(new ImageIcon(img));
+        labelImagem.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JPanel painelTopo = new JPanel();
+        painelTopo.setLayout(new BoxLayout(painelTopo, BoxLayout.Y_AXIS));
+        painelTopo.add(header);
+        painelTopo.add(labelImagem);
+        painelTopo.add(painelPesquisa);
+
+        add(painelTopo, BorderLayout.NORTH);
+
+        String[] colunas = { "ID", "Nome", "Telefone", "Email", "CRMv", "Especialidade" };
+        modeloTabela = new DefaultTableModel(colunas, 0) { 
             @Override
-            public boolean isCellEditable(int row, int col) {
-                return false;
-            }
+            public boolean isCellEditable(int row, int col) { return false; } // Não permite edição direta das células
         };
-        table = new JTable(tableModel);
-        refreshTable();
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        tabela = new JTable(modeloTabela);
+        tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Seleção de apenas uma linha por vez assim nao da pra editar ou excluir mais de um ao mesmo tempo 
+
+        organizador = new TableRowSorter<>(modeloTabela);
+        tabela.setRowSorter(organizador);
+        add(new JScrollPane(tabela), BorderLayout.CENTER);
 
         JPanel buttons = new JPanel();
         JButton btnNovo = new JButton("Novo");
@@ -53,12 +92,12 @@ public class PainelVeterinarios extends JPanel {
         btnNovo.addActionListener(e -> abrirFormulario(null));
 
         btnEditar.addActionListener(e -> {
-            int row = table.getSelectedRow();
+            int row = tabela.getSelectedRow();
             if (row == -1) {
                 JOptionPane.showMessageDialog(this, "Selecione um veterinário para editar.",
                         "Aviso", JOptionPane.WARNING_MESSAGE);
             } else {
-                int id = (int) tableModel.getValueAt(row, 0);
+                int id = (int) modeloTabela.getValueAt(row, 0);
                 try {
                     Veterinario c = banco.getVeterinarios().buscarPorId(id);
                     abrirFormulario(c);
@@ -70,15 +109,15 @@ public class PainelVeterinarios extends JPanel {
         });
 
         btnExcluir.addActionListener(e -> {
-            int row = table.getSelectedRow();
+            int row = tabela.getSelectedRow();
             if (row == -1) {
                 JOptionPane.showMessageDialog(this, "Selecione um Veterinario para excluir.",
                         "Aviso", JOptionPane.WARNING_MESSAGE);
             } else {
-                int id = (int) tableModel.getValueAt(row, 0);
+                int id = (int) modeloTabela.getValueAt(row, 0);
                 try {
                     banco.getVeterinarios().remover(id);
-                    refreshTable();
+                    atualizarTabela();
                     JOptionPane.showMessageDialog(this, "Veterinário removido.",
                             "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IdInexistenteExcecao ex) {
@@ -87,14 +126,48 @@ public class PainelVeterinarios extends JPanel {
                 }
             }
         });
+
+        btnPesquisar.addActionListener(e -> {
+            String texto = campoPesquisa.getText().trim();
+            
+            if (texto.isEmpty()) {
+                organizador.setRowFilter(null);
+            } else {
+                try {
+                    int id = Integer.parseInt(texto);
+                    organizador.setRowFilter(RowFilter.orFilter(
+                        List.of(
+                            RowFilter.regexFilter("^" + id + "$", 0)
+                        )
+                    ));
+                } catch (NumberFormatException ex) {
+                    organizador.setRowFilter(RowFilter.orFilter(
+                        List.of(
+                            RowFilter.regexFilter("(?i)" + texto, 0),
+                            RowFilter.regexFilter("(?i)" + texto, 1),
+                            RowFilter.regexFilter("(?i)" + texto, 4),
+                            RowFilter.regexFilter("(?i)" + texto, 5)
+                        )
+                    ));
+                }
+            }
+        });
+
+        btnLimpar.addActionListener(e -> {
+            campoPesquisa.setText("");
+            organizador.setRowFilter(null);
+            atualizarTabela();
+        });
+
+
     }
 
-    private void refreshTable() {
-        tableModel.setRowCount(0);
-        List<Veterinario> list = banco.getVeterinarios().listar();
-        for (Veterinario c : list) {
-            Object[] row = { c.getId(), c.getNome(), c.getTelefone(), c.getEmail(), c.getCrmv(), c.getEspecialidade() };
-            tableModel.addRow(row);
+    private void atualizarTabela() { // Atualiza a tabela com os dados do banco de dados
+        modeloTabela.setRowCount(0);
+        List<Veterinario> lista = banco.getVeterinarios().listar();
+        for (Veterinario c : lista) {
+            Object[] linha = { c.getId(), c.getNome(), c.getTelefone(), c.getEmail(), c.getCrmv(), c.getEspecialidade() };
+            modeloTabela.addRow(linha);
         }
     }
 
@@ -121,7 +194,7 @@ public class PainelVeterinarios extends JPanel {
         dialog.add(txtTelefone);
         dialog.add(new JLabel("Email:"));
         dialog.add(txtEmail);
-        dialog.add(new JLabel("CRM:"));
+        dialog.add(new JLabel("CRMv:"));
         dialog.add(txtCrmv);
         dialog.add(new JLabel("Especialidade:"));
         dialog.add(txtEspecialidade);
@@ -158,7 +231,7 @@ public class PainelVeterinarios extends JPanel {
                     Veterinario vete = new Veterinario(id, nome, tel, email, crmv, especialidade);
                     banco.getVeterinarios().atualizar(vete);
                 }
-                refreshTable();
+                atualizarTabela();
                 dialog.dispose();
                 JOptionPane.showMessageDialog(this, "Operação realizada com sucesso.",
                         "Sucesso", JOptionPane.INFORMATION_MESSAGE);
