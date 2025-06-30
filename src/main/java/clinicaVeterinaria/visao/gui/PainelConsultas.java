@@ -215,13 +215,34 @@ public class PainelConsultas extends JPanel {
         }
 
         JComboBox<Animal> cbAnimal = new JComboBox<>();
-        List<Animal> animais = banco.getAnimais().listar();
-        for (Animal a : animais) {
-            cbAnimal.addItem(a);
+        cbAnimal.setEnabled(false); // Desabilita inicialmente
+
+        // Preenche animais do cliente selecionado
+        cbCliente.addActionListener(e -> {
+            cbAnimal.removeAllItems();
+            Cliente clienteSelecionado = (Cliente) cbCliente.getSelectedItem();
+            if (clienteSelecionado != null) {
+                List<Animal> animaisDoCliente = banco.getAnimais().listar();
+                for (Animal a : animaisDoCliente) {
+                    if (a.getDono() != null && a.getDono().equals(clienteSelecionado)) {
+                        cbAnimal.addItem(a);
+                    }
+                }
+                cbAnimal.setEnabled(cbAnimal.getItemCount() > 0);
+            } else {
+                cbAnimal.setEnabled(false);
+            }
+        });
+
+        // Se for edição, seleciona o cliente e animal corretos
+        if (c != null && c.getCliente() != null) {
+            cbCliente.setSelectedItem(c.getCliente());
+            cbCliente.getActionListeners()[0].actionPerformed(null); // Força atualização dos animais
+            if (c.getAnimal() != null) {
+                cbAnimal.setSelectedItem(c.getAnimal());
+            }
         }
-        if (c != null && c.getAnimal() != null) {
-            cbAnimal.setSelectedItem(c.getAnimal());
-        }
+
 
         JTextField txtData = new JTextField(c == null || c.getDataHora() == null ? "" : c.getDataHora().toString());
         txtData.setToolTipText("Formato: dd/MM/yyyy HH:mm (ex: 30/06/2025 14:30)");
