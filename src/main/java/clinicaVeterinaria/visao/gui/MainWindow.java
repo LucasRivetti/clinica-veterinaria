@@ -1,16 +1,37 @@
 package clinicaVeterinaria.visao.gui;
 
-import clinicaVeterinaria.persistencia.BancoDeDados;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.ActionEvent;
+
+import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
+import clinicaVeterinaria.persistencia.BancoDeDados;
 
 public class MainWindow extends JFrame {
     private static final int MENU_WIDTH     = 220; 
@@ -88,7 +109,7 @@ public class MainWindow extends JFrame {
         painelPrincipal.add(new PainelVeterinarios(bancoDeDados), "Veterinários");
         painelPrincipal.add(new PainelAnimais(bancoDeDados), "Animais");
         painelPrincipal.add(new PainelProcedimentos(bancoDeDados), "Procedimentos");
-        //painelPrincipal.add(new PainelConsultas(bancoDeDados), "Consultas");
+        painelPrincipal.add(new PainelConsultas(bancoDeDados), "Consultas");
 
         add(painelPrincipal, BorderLayout.CENTER);
     }
