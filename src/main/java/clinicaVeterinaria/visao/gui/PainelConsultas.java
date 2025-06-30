@@ -235,30 +235,31 @@ public class PainelConsultas extends JPanel {
         List<ItemConsulta> itensExistentes = c != null ? c.getItens() : new java.util.ArrayList<>();
         java.util.Map<Procedimento, JCheckBox> mapCheck = new java.util.HashMap<>();
         java.util.Map<Procedimento, JSpinner> mapSpinner = new java.util.HashMap<>();
-        for (Procedimento p : procedimentosDisponiveis) {
-            JPanel linha = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            JCheckBox check = new JCheckBox(p.getNome() + String.format(" (R$ %.2f)", p.getPreco()));
-            JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
-            spinner.setEnabled(false);
 
-            // Se for edição, marca e seta quantidade se já existia
-            int qtd = 1;
-            for (ItemConsulta item : itensExistentes) {
-                if (item.getProcedimento().getId() == p.getId()) {
-                    check.setSelected(true);
-                    spinner.setEnabled(true);
-                    qtd = (int) item.getPreco(); 
-                }
+        for (Procedimento p : procedimentosDisponiveis) {
+        JPanel linha = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JCheckBox check = new JCheckBox(p.getNome() + String.format(" (R$ %.2f)", p.getPreco()));
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+        spinner.setEnabled(false);
+
+        // Se for edição, marca e seta quantidade se já existia
+        int qtd = 1;
+        for (ItemConsulta item : itensExistentes) {
+            if (item.getProcedimento().getId() == p.getId()) {
+                check.setSelected(true);
+                spinner.setEnabled(true);
+                qtd = item.getQuantidade(); // Corrigido: pega a quantidade real
             }
-            spinner.setValue(qtd);
-            check.addActionListener(e -> spinner.setEnabled(check.isSelected()));
-            linha.add(check);
-            linha.add(new JLabel("Qtd:"));
-            linha.add(spinner);
-            painelProcedimentos.add(linha);
-            mapCheck.put(p, check);
-            mapSpinner.put(p, spinner);
         }
+        spinner.setValue(qtd);
+        check.addActionListener(e -> spinner.setEnabled(check.isSelected()));
+        linha.add(check);
+        linha.add(new JLabel("Qtd:"));
+        linha.add(spinner);
+        painelProcedimentos.add(linha);
+        mapCheck.put(p, check);
+        mapSpinner.put(p, spinner);
+    }
         JScrollPane scrollProcedimentos = new JScrollPane(painelProcedimentos);
         scrollProcedimentos.setPreferredSize(new Dimension(350, 120));
 
@@ -306,71 +307,69 @@ public class PainelConsultas extends JPanel {
         dialog.add(btnCancelar);
 
         btnSalvar.addActionListener(ae -> {
+        try {
+            int id = Integer.parseInt(txtId.getText().trim());
+            Cliente cliente = (Cliente) cbCliente.getSelectedItem();
+            Veterinario veterinario = (Veterinario) cbVeterinario.getSelectedItem();
+            Animal animal = (Animal) cbAnimal.getSelectedItem();
+            String descricao = txtDescricao.getText().trim();
+            java.util.Date dataHora = null;
             try {
-                int id = Integer.parseInt(txtId.getText().trim());
-                Cliente cliente = (Cliente) cbCliente.getSelectedItem();
-                Veterinario veterinario = (Veterinario) cbVeterinario.getSelectedItem();
-                Animal animal = (Animal) cbAnimal.getSelectedItem();
-                String descricao = txtDescricao.getText().trim();
-                java.util.Date dataHora = null;
-                try {
-                    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
-                    dataHora = sdf.parse(txtData.getText().trim());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(dialog, "Data/Hora inválida. Use o formato: dd/MM/yyyy HH:mm (ex: 30/06/2025 14:30)", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if (cliente == null || veterinario == null || animal == null || descricao.isEmpty()) {
-                    JOptionPane.showMessageDialog(dialog, "Preencha todos os campos.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Monta os itens da consulta
-                List<ItemConsulta> itens = new java.util.ArrayList<>();
-                boolean peloMenosUm = false;
-                for (Procedimento p : procedimentosDisponiveis) {
-                    JCheckBox check = mapCheck.get(p);
-                    JSpinner spinner = mapSpinner.get(p);
-                    if (check.isSelected()) {
-                        int qtd = (int) spinner.getValue();
-                        for (int i = 0; i < qtd; i++) {
-                            itens.add(new clinicaVeterinaria.modelo.ItemConsulta(p, p.getPreco()));
-                        }
-                        peloMenosUm = true;
-                    }
-                }
-                if (!peloMenosUm) {
-                    JOptionPane.showMessageDialog(dialog, "Selecione pelo menos um procedimento.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if (c == null) {
-                    List<Consulta> consultas = banco.getConsultas().listar();
-                    for (Consulta existente : consultas) {
-                        if (existente.getId() == id) {
-                            JOptionPane.showMessageDialog(dialog, "Já existe uma consulta com esse ID!", "ID duplicado", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                    }
-                    Consulta nova = new Consulta(id, cliente, veterinario, animal, dataHora, itens, descricao);
-                    banco.getConsultas().adicionar(nova);
-                } else {
-                    c.setCliente(cliente);
-                    c.setVeterinario(veterinario);
-                    c.setAnimal(animal);
-                    c.setDataHora(dataHora);
-                    c.setDescricao(descricao);
-                    c.setItens(itens);
-                    banco.getConsultas().atualizar(c);
-                }
-                atualizarTabela();
-                dialog.dispose();
-                JOptionPane.showMessageDialog(this, "Operação realizada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(dialog, "ID deve ser um número.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
-            } catch (IdInexistenteExcecao ex) {
-                JOptionPane.showMessageDialog(dialog, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+                dataHora = sdf.parse(txtData.getText().trim());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(dialog, "Data/Hora inválida. Use o formato: dd/MM/yyyy HH:mm (ex: 30/06/2025 14:30)", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        });
+            if (cliente == null || veterinario == null || animal == null || descricao.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Preencha todos os campos.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Monta os itens da consulta
+            List<ItemConsulta> itens = new java.util.ArrayList<>();
+            boolean peloMenosUm = false;
+            for (Procedimento p : procedimentosDisponiveis) {
+                JCheckBox check = mapCheck.get(p);
+                JSpinner spinner = mapSpinner.get(p);
+                if (check.isSelected()) {
+                    int qtd = (int) spinner.getValue();
+                    itens.add(new ItemConsulta(p, p.getPreco(), qtd)); // Corrigido: salva quantidade
+                    peloMenosUm = true;
+                }
+            }
+            if (!peloMenosUm) {
+                JOptionPane.showMessageDialog(dialog, "Selecione pelo menos um procedimento.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (c == null) {
+                List<Consulta> consultas = banco.getConsultas().listar();
+                for (Consulta existente : consultas) {
+                    if (existente.getId() == id) {
+                        JOptionPane.showMessageDialog(dialog, "Já existe uma consulta com esse ID!", "ID duplicado", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                Consulta nova = new Consulta(id, cliente, veterinario, animal, dataHora, itens, descricao);
+                banco.getConsultas().adicionar(nova);
+            } else {
+                c.setCliente(cliente);
+                c.setVeterinario(veterinario);
+                c.setAnimal(animal);
+                c.setDataHora(dataHora);
+                c.setDescricao(descricao);
+                c.setItens(itens);
+                banco.getConsultas().atualizar(c);
+            }
+            atualizarTabela();
+            dialog.dispose();
+            JOptionPane.showMessageDialog(this, "Operação realizada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(dialog, "ID deve ser um número.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+        } catch (IdInexistenteExcecao ex) {
+            JOptionPane.showMessageDialog(dialog, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    });
         btnCancelar.addActionListener(ae -> dialog.dispose());
 
         dialog.setVisible(true);

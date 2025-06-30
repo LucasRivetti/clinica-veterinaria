@@ -57,8 +57,8 @@ public class TesteConsulta {
             "Consulta de rotina e vacinação."
         );
 
-        consulta.adicionarItem(new ItemConsulta(procVacina, procVacina.getPreco()));
-        consulta.adicionarItem(new ItemConsulta(procExame, procExame.getPreco()));
+        consulta.adicionarItem(new ItemConsulta(procVacina, procVacina.getPreco(), 1));
+        consulta.adicionarItem(new ItemConsulta(procExame, procExame.getPreco(), 1));
 
         System.out.println("\n=== DADOS DO CLIENTE ===");
         System.out.println(cliente);

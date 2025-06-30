@@ -85,7 +85,9 @@ public class Consulta extends Entidade {
     }
 
     public double calcularValorTotal() {
-        return itens.stream().mapToDouble(ItemConsulta::getPreco).sum();
+        return itens.stream()
+            .mapToDouble(item -> item.getPreco() * item.getQuantidade())
+            .sum();
     }
 
     @Override

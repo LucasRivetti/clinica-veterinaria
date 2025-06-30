@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import clinicaVeterinaria.modelo.*;
+import clinicaVeterinaria.modelo.Animal;
+import clinicaVeterinaria.modelo.Cliente;
+import clinicaVeterinaria.modelo.Consulta;
+import clinicaVeterinaria.modelo.ItemConsulta;
+import clinicaVeterinaria.modelo.Procedimento;
+import clinicaVeterinaria.modelo.Veterinario;
 import clinicaVeterinaria.persistencia.BancoDeDados;
 
 
@@ -69,7 +74,7 @@ public class TesteBd {
         );
         
         List<ItemConsulta> itensConsulta = new ArrayList<>();
-        ItemConsulta itemProcVacina = new ItemConsulta(procVacina, procVacina.getPreco());
+        ItemConsulta itemProcVacina = new ItemConsulta(procVacina, procVacina.getPreco(), 1);
         itensConsulta.add(itemProcVacina);
 
         Consulta consulta = new Consulta(

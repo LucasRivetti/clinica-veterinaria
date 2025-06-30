@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import clinicaVeterinaria.modelo.*;
+import clinicaVeterinaria.modelo.Animal;
+import clinicaVeterinaria.modelo.Cliente;
+import clinicaVeterinaria.modelo.Consulta;
+import clinicaVeterinaria.modelo.ItemConsulta;
+import clinicaVeterinaria.modelo.Procedimento;
+import clinicaVeterinaria.modelo.Veterinario;
 import clinicaVeterinaria.persistencia.BancoDeDados;
 import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
 
@@ -113,21 +118,25 @@ public class MenuConsulta {
             scanner.nextLine();
 
             if (idProcedimento == 0) break;
-        
+
             try {
                 Procedimento procedimento = bancoDeDados.getProcedimentos().buscarPorId(idProcedimento);
-                System.out.print("Alterar o Valor do procedimento? (S/N): ");
-                String resposta = scanner.nextLine();
-                if (resposta.equalsIgnoreCase("N")) {
-                    ItemConsulta item = new ItemConsulta(procedimento, procedimento.getPreco());
-                    itensConsulta.add(item);
-                    continue;
-                }
-                System.out.print("Valor do procedimento: ");
-                double valor = scanner.nextDouble();
+
+                System.out.print("Quantidade desse procedimento: ");
+                int quantidade = scanner.nextInt();
                 scanner.nextLine();
 
-                ItemConsulta item = new ItemConsulta(procedimento, valor);
+                System.out.print("Alterar o Valor do procedimento? (S/N): ");
+                String resposta = scanner.nextLine();
+                double valor;
+                if (resposta.equalsIgnoreCase("N")) {
+                    valor = procedimento.getPreco();
+                } else {
+                    System.out.print("Valor do procedimento: ");
+                    valor = scanner.nextDouble();
+                    scanner.nextLine();
+                }
+                ItemConsulta item = new ItemConsulta(procedimento, valor, quantidade);
                 itensConsulta.add(item);
             } catch (Exception e) {
                 System.out.println("Procedimento não encontrado.");
@@ -234,7 +243,7 @@ public class MenuConsulta {
                     double valor = scanner.nextDouble();
                     scanner.nextLine();
 
-                    ItemConsulta item = new ItemConsulta(procedimento, valor);
+                    ItemConsulta item = new ItemConsulta(procedimento, valor, 1);
                     itensConsulta.add(item);
                     consulta.setItens(itensConsulta); 
                 } catch (Exception e) {
