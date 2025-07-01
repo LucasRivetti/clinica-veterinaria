@@ -38,6 +38,10 @@ public class PainelProcedimentos extends JPanel {
         JPanel botoes = new JPanel();
         botoes.add(btnNovo);
 
+        // barra de pesquisa
+
+        
+
         add(header, BorderLayout.NORTH);
         add(scroll, BorderLayout.CENTER);
         add(botoes, BorderLayout.SOUTH);

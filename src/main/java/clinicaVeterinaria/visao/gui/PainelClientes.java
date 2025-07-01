@@ -21,7 +21,6 @@ public class PainelClientes extends JPanel {
     public PainelClientes(BancoDeDados banco) {
         this.banco = banco;
         setLayout(new BorderLayout());
-
         // Cabeçalho
         JLabel titulo = new JLabel("Gestão de Clientes", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
@@ -100,6 +99,8 @@ public class PainelClientes extends JPanel {
         botoes.add(btnEditar);
         botoes.add(btnExcluir);
         add(botoes, BorderLayout.SOUTH);
+        atualizarTabela();
+
 
         // Eventos dos botões dessa forema o usuario pode adicionar, editar e excluir clientes
         // e a tabela é atualizada automaticamente

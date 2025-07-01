@@ -32,6 +32,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import clinicaVeterinaria.persistencia.BancoDeDados;
+import clinicaVeterinaria.visao.InterfaceTerminal.TesteBd;
 
 public class MainWindow extends JFrame {
     private static final int MENU_WIDTH     = 220; 
@@ -101,6 +102,9 @@ public class MainWindow extends JFrame {
         layoutCartoes = new CardLayout();
         painelPrincipal = new JPanel(layoutCartoes);
         painelPrincipal.setBackground(UIConstants.BACKGROUND);
+
+        TesteBd testeBd = new TesteBd(bancoDeDados);
+        testeBd.inicializarBanco(bancoDeDados);
 
         // Adiciona os painéis principais da aplicação deixei comentado ja que ainda não implementamos todos os painéis
         // mas assim que implementarmos podemos descomentar e adicionar aqui que ja vai aparecer quando vcs rodarem

@@ -87,6 +87,8 @@ public class PainelVeterinarios extends JPanel {
         buttons.add(btnEditar);
         buttons.add(btnExcluir);
         add(buttons, BorderLayout.SOUTH);
+        atualizarTabela();
+
 
         // Ações dos botões
         btnNovo.addActionListener(e -> abrirFormulario(null));

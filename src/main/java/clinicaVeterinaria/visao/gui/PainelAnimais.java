@@ -25,9 +25,6 @@ public class PainelAnimais extends JPanel {
         this.banco = banco;
         setLayout(new BorderLayout());
 
-        TesteBd testeBd = new TesteBd(banco);
-        testeBd.inicializarBanco(banco);
-
         // Cabeçalho
         JLabel titulo = new JLabel("Gestão de Animais", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));

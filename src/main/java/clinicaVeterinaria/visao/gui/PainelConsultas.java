@@ -259,7 +259,7 @@ public class PainelConsultas extends JPanel {
 
         dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(this);
-        dialog.setLayout(new GridLayout(10, 2, 8, 8));
+        dialog.setLayout(new GridLayout(10, 2, 8, 8)); //gridbaglayout mudar
 
         JTextField txtId = new JTextField(c == null ? "" : String.valueOf(c.getId()));
         txtId.setEnabled(c == null);
