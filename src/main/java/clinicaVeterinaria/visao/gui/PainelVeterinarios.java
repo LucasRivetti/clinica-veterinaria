@@ -166,10 +166,15 @@ public class PainelVeterinarios extends JPanel {
         modeloTabela.setRowCount(0);
         List<Veterinario> lista = banco.getVeterinarios().listar();
         for (Veterinario c : lista) {
-            Object[] linha = { c.getId(), c.getNome(), c.getTelefone(), c.getEmail(), c.getCrmv(), c.getEspecialidade() };
+            Object[] linha = { c.getId(), c.getNome(), c.getTelefone(), c.getEspecialidade(), c.getCrmv(), c.getEmail() };
             modeloTabela.addRow(linha);
         }
     }
+
+     private boolean matchesOnlyText(String texto) {
+            return texto.matches("[A-Za-zÀ-ÿ\\s]+");
+        }
+
 
     private void abrirFormulario(Veterinario c) {
         JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this),
@@ -192,11 +197,11 @@ public class PainelVeterinarios extends JPanel {
         dialog.add(txtNome);
         dialog.add(new JLabel("Telefone:"));
         dialog.add(txtTelefone);
-        dialog.add(new JLabel("Especialidade"));
+        dialog.add(new JLabel("Email:"));
         dialog.add(txtEmail);
         dialog.add(new JLabel("CRMv:"));
         dialog.add(txtCrmv);
-        dialog.add(new JLabel("Email:"));
+        dialog.add(new JLabel("Especialidade:"));
         dialog.add(txtEspecialidade);
 
         JButton btnSalvar = new JButton("Salvar");
@@ -208,10 +213,27 @@ public class PainelVeterinarios extends JPanel {
             try {
                 int id = Integer.parseInt(txtId.getText());
                 String nome = txtNome.getText();
+                if (!matchesOnlyText(nome)) {
+                    JOptionPane.showMessageDialog(dialog, "Nome deve conter apenas letras e espaços.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 String tel = txtTelefone.getText();
                 String email = txtEmail.getText();
                 String crmv = txtCrmv.getText();
                 String especialidade = txtEspecialidade.getText();
+                if (!matchesOnlyText(especialidade)) {
+                    JOptionPane.showMessageDialog(dialog, "especialidade deve conter apenas letras e espaços.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if(!tel.matches("\\d+")){
+                    JOptionPane.showMessageDialog(dialog, "Telefone deve conter apenas números.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if(!crmv.matches("\\d+")){
+                    JOptionPane.showMessageDialog(dialog, "CRMv deve conter apenas números.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                if (nome.isEmpty() || tel.isEmpty() || email.isEmpty() || crmv.isEmpty() || especialidade.isEmpty()) { //se algum campo estiver vazio, exibe mensagem de erro
                     JOptionPane.showMessageDialog(dialog, "Preencha todos os campos.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);

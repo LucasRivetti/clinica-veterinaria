@@ -189,6 +189,10 @@ public class PainelAnimais extends JPanel {
         }
     }
 
+     public boolean matchesOnlyText(String texto) {
+            return texto.matches("[A-Za-zÀ-ÿ\\s]+");
+        }
+
     private void abrirFormulario(Animal a) { // Abre um formulário para adicionar ou editar um cliente
         Frame frame = JOptionPane.getFrameForComponent(this);
         JDialog dialog = new JDialog(frame, a == null ? "Novo Animal" : "Editar Animal", true);
@@ -203,7 +207,8 @@ public class PainelAnimais extends JPanel {
         JTextField txtEspecie = new JTextField(a == null ? "" : a.getEspecie());
         JTextField txtRaca = new JTextField(a == null ? "" : a.getRaca());
         JTextField txtIdade = new JTextField(a == null ? "" : String.valueOf(a.getIdade()));
-        JTextField txtSexo = new JTextField(a == null ? "" : a.getSexo());
+        JComboBox<String> cbSexo = new JComboBox<>(new String[]{"M", "F"});
+        if(a !=null) cbSexo.setSelectedItem(a.getSexo());
         
         // selecao do cliente que e dono do cachorro
         JComboBox<Cliente> cbDono = new JComboBox<>();
@@ -226,7 +231,7 @@ public class PainelAnimais extends JPanel {
         dialog.add(new JLabel("Idade:"));
         dialog.add(txtIdade);
         dialog.add(new JLabel("Sexo:"));
-        dialog.add(txtSexo);
+        dialog.add(cbSexo);
         dialog.add(new JLabel("Dono:"));
         dialog.add(cbDono);
 
@@ -235,14 +240,27 @@ public class PainelAnimais extends JPanel {
         dialog.add(btnSalvar);
         dialog.add(btnCancelar);
 
+
         btnSalvar.addActionListener(ae -> {
             try {
                 int id = Integer.parseInt(txtId.getText().trim());
                 String nome = txtNome.getText().trim();
+                if(!matchesOnlyText(nome)) {
+                    JOptionPane.showMessageDialog(dialog, "Nome deve conter apenas letras.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 String especie = txtEspecie.getText().trim();
+                if(!matchesOnlyText(especie)) {
+                    JOptionPane.showMessageDialog(dialog, "Especie deve conter apenas letras.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 String raca = txtRaca.getText().trim();
+                if(!matchesOnlyText(raca)) {
+                    JOptionPane.showMessageDialog(dialog, "Raça deve conter apenas letras.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 int idade = Integer.parseInt(txtIdade.getText().trim());
-                String sexo = txtSexo.getText().trim();
+                String sexo = (String) cbSexo.getSelectedItem();
                 Cliente dono = (Cliente) cbDono.getSelectedItem();
 
                 if (nome.isEmpty() || especie.isEmpty() || raca.isEmpty() || sexo.isEmpty()) {

@@ -168,7 +168,10 @@ public class PainelClientes extends JPanel {
         atualizarTabela();
     }
 
-    
+        private boolean matchesOnlyText(String texto) {
+            return texto.matches("[A-Za-zÀ-ÿ\\s]+");
+        }
+
 
     private void atualizarTabela() { // Atualiza a tabela com os dados do banco de dados
         modeloTabela.setRowCount(0);
@@ -217,10 +220,22 @@ public class PainelClientes extends JPanel {
             try {
                 int id = Integer.parseInt(txtId.getText().trim());// Lê o ID do cliente, se for novo, pode ser vazio
                 String nome = txtNome.getText().trim(); 
+                if (!matchesOnlyText(nome)) { //Deixa adcionar somente letras ao nome
+                    JOptionPane.showMessageDialog(dialog, "Nome deve conter apenas letras.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 String tel = txtTelefone.getText().trim();
                 String email = txtEmail.getText().trim();
                 String cpf = txtCpf.getText().trim();
                 String end = txtEndereco.getText().trim();
+                if(!tel.matches("\\d+")){
+                    JOptionPane.showMessageDialog(dialog, "Telefone deve conter apenas números.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if(!cpf.matches("\\d+")){
+                    JOptionPane.showMessageDialog(dialog, "CPF deve conter apenas números.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 if (nome.isEmpty() || tel.isEmpty() || email.isEmpty() || cpf.isEmpty() || end.isEmpty()) { //se algum campo estiver vazio, exibe mensagem de erro
                     JOptionPane.showMessageDialog(dialog, "Preencha todos os campos.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
@@ -246,7 +261,7 @@ public class PainelClientes extends JPanel {
                 dialog.dispose();
                 JOptionPane.showMessageDialog(this, "Operação realizada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(dialog, "ID deve ser um número.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(dialog, "ID deve ser apenas número.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
             } catch (IdInexistenteExcecao ex) {
                 JOptionPane.showMessageDialog(dialog, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }

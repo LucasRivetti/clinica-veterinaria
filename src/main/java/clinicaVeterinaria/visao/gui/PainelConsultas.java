@@ -63,7 +63,7 @@ public class PainelConsultas extends JPanel {
         header.add(titulo, BorderLayout.CENTER);
 
         //Imagem do cabeçalho
-        ImageIcon icon = new ImageIcon(getClass().getResource("/images/consultas.jpg"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/consulta.jpg"));
         Image img = icon.getImage().getScaledInstance(350, 150, Image.SCALE_SMOOTH); 
         JLabel labelImagem = new JLabel(new ImageIcon(img));
 
