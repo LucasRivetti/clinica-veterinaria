@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -109,6 +110,48 @@ public class PainelConsultas extends JPanel {
         tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scroll = new JScrollPane(tabela);
         add(scroll, BorderLayout.CENTER);
+
+        //Dois cliques para abrir a descrição e os procedimentos
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int row = tabela.rowAtPoint(e.getPoint());
+                int col = tabela.columnAtPoint(e.getPoint());
+                if (row != -1 && col == 5 && e.getClickCount() == 2) {
+                    int modelRow = tabela.convertRowIndexToModel(row);
+                    Object descricaoObj = modeloTabela.getValueAt(modelRow, 5);
+                    String descricao = descricaoObj != null ? descricaoObj.toString() : "";
+                    JTextArea area = new JTextArea(descricao);
+                    area.setEditable(false);
+                    area.setLineWrap(true);
+                    area.setWrapStyleWord(true);
+                    JScrollPane scroll = new JScrollPane(area);
+                    scroll.setPreferredSize(new Dimension(350, 120));
+                    JOptionPane.showMessageDialog(
+                        PainelConsultas.this,
+                        scroll,
+                        "Descrição da Consulta",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                } else if (row != -1 && col == 6 && e.getClickCount() == 2) {
+                    int modelRow = tabela.convertRowIndexToModel(row);
+                    Object procedimentosObj = modeloTabela.getValueAt(modelRow, 6);
+                    String procedimentos = procedimentosObj != null ? procedimentosObj.toString() : "";
+                    JTextArea area = new JTextArea(procedimentos);
+                    area.setEditable(false);
+                    area.setLineWrap(true);
+                    area.setWrapStyleWord(true);
+                    JScrollPane scroll = new JScrollPane(area);
+                    scroll.setPreferredSize(new Dimension(350, 120));
+                    JOptionPane.showMessageDialog(
+                        PainelConsultas.this,
+                        scroll,
+                        "Procedimentos da Consulta",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                }
+            }
+        });
 
         // Botões
         JPanel botoes = new JPanel();
