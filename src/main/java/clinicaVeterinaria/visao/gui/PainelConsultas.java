@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -283,7 +285,7 @@ public class PainelConsultas extends JPanel {
         JComboBox<Animal> cbAnimal = new JComboBox<>();
         cbAnimal.setEnabled(false); // Desabilita inicialmente
 
-        // Preenche animais do cliente selecionado
+        //Preenche animais do cliente selecionado
         cbCliente.addActionListener(e -> {
             cbAnimal.removeAllItems();
             Cliente clienteSelecionado = (Cliente) cbCliente.getSelectedItem();
@@ -300,22 +302,28 @@ public class PainelConsultas extends JPanel {
             }
         });
 
-        // Se for edição, seleciona o cliente e animal corretos
+        //Se for edição, seleciona o cliente e animal corretos
         if (c != null && c.getCliente() != null) {
             cbCliente.setSelectedItem(c.getCliente());
-            cbCliente.getActionListeners()[0].actionPerformed(null); // Força atualização dos animais
+            cbCliente.getActionListeners()[0].actionPerformed(null);
             if (c.getAnimal() != null) {
                 cbAnimal.setSelectedItem(c.getAnimal());
             }
         }
 
+        //Formatação da data/hora
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String dataAtual = LocalDateTime.now().format(formatter);
 
-        JTextField txtData = new JTextField(c == null || c.getDataHora() == null ? "" : c.getDataHora().toString());
+        JTextField txtData = new JTextField(
+            c == null || c.getDataHora() == null ? dataAtual : 
+            new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(c.getDataHora())
+        );
         txtData.setToolTipText("Formato: dd/MM/yyyy HH:mm (ex: 30/06/2025 14:30)");
 
         JTextField txtDescricao = new JTextField(c == null ? "" : c.getDescricao());
 
-        // Painel de procedimentos com checkboxes e spinners
+        //Painel de procedimentos com checkboxes e spinners
         JPanel painelProcedimentos = new JPanel();
         painelProcedimentos.setLayout(new BoxLayout(painelProcedimentos, BoxLayout.Y_AXIS));
         List<Procedimento> procedimentosDisponiveis = banco.getProcedimentos().listar();
@@ -329,13 +337,13 @@ public class PainelConsultas extends JPanel {
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
         spinner.setEnabled(false);
 
-        // Se for edição, marca e seta quantidade se já existia
+        //Se for edição, marca e seta quantidade se já existia
         int qtd = 1;
         for (ItemConsulta item : itensExistentes) {
             if (item.getProcedimento().getId() == p.getId()) {
                 check.setSelected(true);
                 spinner.setEnabled(true);
-                qtd = item.getQuantidade(); // Corrigido: pega a quantidade real
+                qtd = item.getQuantidade();
             }
         }
         spinner.setValue(qtd);
@@ -364,7 +372,7 @@ public class PainelConsultas extends JPanel {
             lblValorTotal.setText(String.format("Valor Total: R$ %.2f", total));
         };
 
-        // Listeners para atualizar o valor total
+        //Atualizar o valor total
         for (Procedimento p : procedimentosDisponiveis) {
             mapCheck.get(p).addActionListener(e -> atualizarTotal.run());
             mapSpinner.get(p).addChangeListener(e -> atualizarTotal.run());
