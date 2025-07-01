@@ -25,6 +25,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
@@ -153,7 +154,30 @@ public class PainelConsultas extends JPanel {
             }
         });
 
-        // Falta o botão para pesquisar
+        btnPesquisar.addActionListener(e -> {
+            String texto = campoPesquisa.getText().trim();
+
+            if (texto.isEmpty()) {
+                organizador.setRowFilter(null);
+            } else {
+                try {
+                    int id = Integer.parseInt(texto);
+                    organizador.setRowFilter(RowFilter.orFilter(
+                        List.of(
+                            RowFilter.regexFilter("^" + id + "$", 0) 
+                        )
+                    ));
+                } catch (NumberFormatException ex) {
+                    organizador.setRowFilter(RowFilter.orFilter(
+                        List.of(
+                            RowFilter.regexFilter("(?i)" + texto, 1), 
+                            RowFilter.regexFilter("(?i)" + texto, 2), 
+                            RowFilter.regexFilter("(?i)" + texto, 6)  
+                        )
+                    ));
+                }
+            }
+        });
 
         btnLimpar.addActionListener(e -> {
             campoPesquisa.setText("");
@@ -171,8 +195,7 @@ public class PainelConsultas extends JPanel {
             String procedimentos = c.getItens().isEmpty() ? "Nenhum" : c.getItens().stream()
                 .map(item -> item.getProcedimento().getNome())
                 .reduce((a, b) -> a + ", " + b).orElse("");
-            Object[] linha = {
-                c.getId(),
+            Object[] linha = { c.getId(),
                 c.getCliente() != null ? c.getCliente().getNome() : "Sem cliente",
                 c.getVeterinario() != null ? c.getVeterinario().getNome() : "Sem veterinário",
                 c.getAnimal() != null ? c.getAnimal().getNome() : "Sem animal",
