@@ -59,15 +59,15 @@ public class PainelConsultas extends JPanel {
         JLabel titulo = new JLabel("Gestão de Consultas", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         titulo.setForeground(UIConstants.PRIMARY);
-        titulo.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
+        titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
         JPanel header = new JPanel(new BorderLayout());
         header.setPreferredSize(new Dimension(0, 70));
         header.add(titulo, BorderLayout.CENTER);
 
-        //Imagem do cabeçalho
+        // Imagem do cabeçalho
         ImageIcon icon = new ImageIcon(getClass().getResource("/images/consulta.jpg"));
-        Image img = icon.getImage().getScaledInstance(350, 150, Image.SCALE_SMOOTH); 
+        Image img = icon.getImage().getScaledInstance(350, 150, Image.SCALE_SMOOTH);
         JLabel labelImagem = new JLabel(new ImageIcon(img));
 
         // Painel de pesquisa
@@ -76,7 +76,7 @@ public class PainelConsultas extends JPanel {
 
         campoPesquisa = new JTextField();
         campoPesquisa.setToolTipText("Pesquisar por nome do cliente ou ID");
-        
+
         JButton btnPesquisar = new JButton("Pesquisar");
         JButton btnLimpar = new JButton("Limpar");
 
@@ -87,15 +87,15 @@ public class PainelConsultas extends JPanel {
         painelPesquisa.add(new JLabel("Pesquisar:"), BorderLayout.WEST);
         painelPesquisa.add(campoPesquisa, BorderLayout.CENTER);
         painelPesquisa.add(painelBotoes, BorderLayout.EAST);
-        painelPesquisa.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); 
-        
+        painelPesquisa.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+
         // Auxiliar pro topo
         JPanel painelTopo = new JPanel();
         painelTopo.setLayout(new BoxLayout(painelTopo, BoxLayout.Y_AXIS));
         labelImagem.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelTopo.add(header);
         painelTopo.add(labelImagem);
-        painelTopo.add(painelPesquisa); 
+        painelTopo.add(painelPesquisa);
         add(painelTopo, BorderLayout.NORTH);
 
         // Tabela de consultas declarada com colunas fixas
@@ -103,7 +103,9 @@ public class PainelConsultas extends JPanel {
         String[] colunas = { "ID", "Cliente", "Veterinário", "Animal", "Data", "Descrição", "Procedimentos", "Valor" };
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
-            public boolean isCellEditable(int row, int col) { return false; }
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
         };
         tabela = new JTable(modeloTabela);
         organizador = new TableRowSorter<>(modeloTabela);
@@ -113,7 +115,7 @@ public class PainelConsultas extends JPanel {
         JScrollPane scroll = new JScrollPane(tabela);
         add(scroll, BorderLayout.CENTER);
 
-        //Dois cliques para abrir a descrição e os procedimentos
+        // Dois cliques para abrir a descrição e os procedimentos
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -130,11 +132,10 @@ public class PainelConsultas extends JPanel {
                     JScrollPane scroll = new JScrollPane(area);
                     scroll.setPreferredSize(new Dimension(350, 120));
                     JOptionPane.showMessageDialog(
-                        PainelConsultas.this,
-                        scroll,
-                        "Descrição da Consulta",
-                        JOptionPane.INFORMATION_MESSAGE
-                    );
+                            PainelConsultas.this,
+                            scroll,
+                            "Descrição da Consulta",
+                            JOptionPane.INFORMATION_MESSAGE);
                 } else if (row != -1 && col == 6 && e.getClickCount() == 2) {
                     int modelRow = tabela.convertRowIndexToModel(row);
                     Object procedimentosObj = modeloTabela.getValueAt(modelRow, 6);
@@ -146,11 +147,10 @@ public class PainelConsultas extends JPanel {
                     JScrollPane scroll = new JScrollPane(area);
                     scroll.setPreferredSize(new Dimension(350, 120));
                     JOptionPane.showMessageDialog(
-                        PainelConsultas.this,
-                        scroll,
-                        "Procedimentos da Consulta",
-                        JOptionPane.INFORMATION_MESSAGE
-                    );
+                            PainelConsultas.this,
+                            scroll,
+                            "Procedimentos da Consulta",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
@@ -160,9 +160,11 @@ public class PainelConsultas extends JPanel {
         JButton btnNovo = new JButton("Novo");
         JButton btnEditar = new JButton("Editar");
         JButton btnExcluir = new JButton("Excluir");
+        JButton btnVerProcedimentos = new JButton("Ver Procedimentos");
         botoes.add(btnNovo);
         botoes.add(btnEditar);
         botoes.add(btnExcluir);
+        botoes.add(btnVerProcedimentos);
         add(botoes, BorderLayout.SOUTH);
 
         // Eventos dos botões para adicionar, editar e excluir consultas
@@ -171,7 +173,8 @@ public class PainelConsultas extends JPanel {
         btnEditar.addActionListener(e -> {
             int linha = tabela.getSelectedRow();
             if (linha == -1) {
-                JOptionPane.showMessageDialog(this, "Selecione uma consulta para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Selecione uma consulta para editar.", "Aviso",
+                        JOptionPane.WARNING_MESSAGE);
             } else {
                 int id = (int) modeloTabela.getValueAt(linha, 0);
                 try {
@@ -186,13 +189,31 @@ public class PainelConsultas extends JPanel {
         btnExcluir.addActionListener(e -> {
             int linha = tabela.getSelectedRow();
             if (linha == -1) {
-                JOptionPane.showMessageDialog(this, "Selecione uma consulta para excluir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Selecione uma consulta para excluir.", "Aviso",
+                        JOptionPane.WARNING_MESSAGE);
             } else {
                 int id = (int) modeloTabela.getValueAt(linha, 0);
                 try {
                     banco.getConsultas().remover(id);
                     atualizarTabela();
-                    JOptionPane.showMessageDialog(this, "Consulta removida.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Consulta removida.", "Sucesso",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (IdInexistenteExcecao ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        btnVerProcedimentos.addActionListener(e -> {
+            int linha = tabela.getSelectedRow();
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione uma consulta para visualizar os procedimentos.", "Aviso",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                int id = (int) modeloTabela.getValueAt(linha, 0);
+                try {
+                    Consulta consulta = banco.getConsultas().buscarPorId(id);
+                    exibirProcedimentos(consulta);
                 } catch (IdInexistenteExcecao ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 }
@@ -208,18 +229,14 @@ public class PainelConsultas extends JPanel {
                 try {
                     int id = Integer.parseInt(texto);
                     organizador.setRowFilter(RowFilter.orFilter(
-                        List.of(
-                            RowFilter.regexFilter("^" + id + "$", 0) 
-                        )
-                    ));
+                            List.of(
+                                    RowFilter.regexFilter("^" + id + "$", 0))));
                 } catch (NumberFormatException ex) {
                     organizador.setRowFilter(RowFilter.orFilter(
-                        List.of(
-                            RowFilter.regexFilter("(?i)" + texto, 1), 
-                            RowFilter.regexFilter("(?i)" + texto, 2), 
-                            RowFilter.regexFilter("(?i)" + texto, 6)  
-                        )
-                    ));
+                            List.of(
+                                    RowFilter.regexFilter("(?i)" + texto, 1),
+                                    RowFilter.regexFilter("(?i)" + texto, 2),
+                                    RowFilter.regexFilter("(?i)" + texto, 6))));
                 }
             }
         });
@@ -237,21 +254,46 @@ public class PainelConsultas extends JPanel {
         modeloTabela.setRowCount(0);
         List<Consulta> lista = banco.getConsultas().listar();
         for (Consulta c : lista) {
-            String procedimentos = c.getItens().isEmpty() ? "Nenhum" : c.getItens().stream()
-                .map(item -> item.getProcedimento().getNome())
-                .reduce((a, b) -> a + ", " + b).orElse("");
+            String procedimentos = c.getItens().isEmpty() ? "Nenhum"
+                    : c.getItens().stream()
+                            .map(item -> item.getProcedimento().getNome())
+                            .reduce((a, b) -> a + ", " + b).orElse("");
             Object[] linha = { c.getId(),
-                c.getCliente() != null ? c.getCliente().getNome() : "Sem cliente",
-                c.getVeterinario() != null ? c.getVeterinario().getNome() : "Sem veterinário",
-                c.getAnimal() != null ? c.getAnimal().getNome() : "Sem animal",
-                c.getDataHora() != null ? c.getDataHora().toString() : "Sem data",
-                c.getDescricao() != null ? c.getDescricao() : "",
-                procedimentos,
-                String.format("R$ %.2f", c.calcularValorTotal())
+                    c.getCliente() != null ? c.getCliente().getNome() : "Sem cliente",
+                    c.getVeterinario() != null ? c.getVeterinario().getNome() : "Sem veterinário",
+                    c.getAnimal() != null ? c.getAnimal().getNome() : "Sem animal",
+                    c.getDataHora() != null ? c.getDataHora().toString() : "Sem data",
+                    c.getDescricao() != null ? c.getDescricao() : "",
+                    procedimentos,
+                    String.format("R$ %.2f", c.calcularValorTotal())
             };
             modeloTabela.addRow(linha);
         }
     }
+    private void exibirProcedimentos(Consulta consulta) {
+    if (consulta == null || consulta.getItens().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Nenhum procedimento registrado para esta consulta.", "Procedimentos", JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+    StringBuilder sb = new StringBuilder();
+    sb.append("Procedimentos da Consulta:\n\n");
+    for (ItemConsulta item : consulta.getItens()) {
+        sb.append("- ")
+          .append(item.getProcedimento().getNome())
+          .append(" | Qtd: ").append(item.getQuantidade())
+          .append(" | Valor un.: R$ ")
+          .append(String.format("%.2f", item.getProcedimento().getPreco()))
+          .append("\n");
+    }
+    JTextArea area = new JTextArea(sb.toString());
+    area.setEditable(false);
+    area.setLineWrap(true);
+    area.setWrapStyleWord(true);
+    JScrollPane scroll = new JScrollPane(area);
+    scroll.setPreferredSize(new Dimension(350, 120));
+    JOptionPane.showMessageDialog(this, scroll, "Procedimentos", JOptionPane.INFORMATION_MESSAGE);
+}
+
 
     private void abrirFormulario(Consulta c) { // Abre um formulário para adicionar ou editar uma consulta
         Frame frame = JOptionPane.getFrameForComponent(this);
@@ -259,7 +301,7 @@ public class PainelConsultas extends JPanel {
 
         dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(this);
-        dialog.setLayout(new GridLayout(10, 2, 8, 8)); //gridbaglayout mudar
+        dialog.setLayout(new GridLayout(10, 2, 8, 8)); // gridbaglayout mudar
 
         JTextField txtId = new JTextField(c == null ? "" : String.valueOf(c.getId()));
         txtId.setEnabled(c == null);
@@ -285,7 +327,7 @@ public class PainelConsultas extends JPanel {
         JComboBox<Animal> cbAnimal = new JComboBox<>();
         cbAnimal.setEnabled(false); // Desabilita inicialmente
 
-        //Preenche animais do cliente selecionado
+        // Preenche animais do cliente selecionado
         cbCliente.addActionListener(e -> {
             cbAnimal.removeAllItems();
             Cliente clienteSelecionado = (Cliente) cbCliente.getSelectedItem();
@@ -302,7 +344,7 @@ public class PainelConsultas extends JPanel {
             }
         });
 
-        //Se for edição, seleciona o cliente e animal corretos
+        // Se for edição, seleciona o cliente e animal corretos
         if (c != null && c.getCliente() != null) {
             cbCliente.setSelectedItem(c.getCliente());
             cbCliente.getActionListeners()[0].actionPerformed(null);
@@ -311,19 +353,18 @@ public class PainelConsultas extends JPanel {
             }
         }
 
-        //Formatação da data/hora
+        // Formatação da data/hora
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         String dataAtual = LocalDateTime.now().format(formatter);
 
         JTextField txtData = new JTextField(
-            c == null || c.getDataHora() == null ? dataAtual : 
-            new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(c.getDataHora())
-        );
+                c == null || c.getDataHora() == null ? dataAtual
+                        : new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(c.getDataHora()));
         txtData.setToolTipText("Formato: dd/MM/yyyy HH:mm (ex: 30/06/2025 14:30)");
 
         JTextField txtDescricao = new JTextField(c == null ? "" : c.getDescricao());
 
-        //Painel de procedimentos com checkboxes e spinners
+        // Painel de procedimentos com checkboxes e spinners
         JPanel painelProcedimentos = new JPanel();
         painelProcedimentos.setLayout(new BoxLayout(painelProcedimentos, BoxLayout.Y_AXIS));
         List<Procedimento> procedimentosDisponiveis = banco.getProcedimentos().listar();
@@ -332,29 +373,29 @@ public class PainelConsultas extends JPanel {
         java.util.Map<Procedimento, JSpinner> mapSpinner = new java.util.HashMap<>();
 
         for (Procedimento p : procedimentosDisponiveis) {
-        JPanel linha = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JCheckBox check = new JCheckBox(p.getNome() + String.format(" (R$ %.2f)", p.getPreco()));
-        JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
-        spinner.setEnabled(false);
+            JPanel linha = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JCheckBox check = new JCheckBox(p.getNome() + String.format(" (R$ %.2f)", p.getPreco()));
+            JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
+            spinner.setEnabled(false);
 
-        //Se for edição, marca e seta quantidade se já existia
-        int qtd = 1;
-        for (ItemConsulta item : itensExistentes) {
-            if (item.getProcedimento().getId() == p.getId()) {
-                check.setSelected(true);
-                spinner.setEnabled(true);
-                qtd = item.getQuantidade();
+            // Se for edição, marca e seta quantidade se já existia
+            int qtd = 1;
+            for (ItemConsulta item : itensExistentes) {
+                if (item.getProcedimento().getId() == p.getId()) {
+                    check.setSelected(true);
+                    spinner.setEnabled(true);
+                    qtd = item.getQuantidade();
+                }
             }
+            spinner.setValue(qtd);
+            check.addActionListener(e -> spinner.setEnabled(check.isSelected()));
+            linha.add(check);
+            linha.add(new JLabel("Qtd:"));
+            linha.add(spinner);
+            painelProcedimentos.add(linha);
+            mapCheck.put(p, check);
+            mapSpinner.put(p, spinner);
         }
-        spinner.setValue(qtd);
-        check.addActionListener(e -> spinner.setEnabled(check.isSelected()));
-        linha.add(check);
-        linha.add(new JLabel("Qtd:"));
-        linha.add(spinner);
-        painelProcedimentos.add(linha);
-        mapCheck.put(p, check);
-        mapSpinner.put(p, spinner);
-    }
         JScrollPane scrollProcedimentos = new JScrollPane(painelProcedimentos);
         scrollProcedimentos.setPreferredSize(new Dimension(350, 120));
 
@@ -372,7 +413,7 @@ public class PainelConsultas extends JPanel {
             lblValorTotal.setText(String.format("Valor Total: R$ %.2f", total));
         };
 
-        //Atualizar o valor total
+        // Atualizar o valor total
         for (Procedimento p : procedimentosDisponiveis) {
             mapCheck.get(p).addActionListener(e -> atualizarTotal.run());
             mapSpinner.get(p).addChangeListener(e -> atualizarTotal.run());
@@ -402,69 +443,76 @@ public class PainelConsultas extends JPanel {
         dialog.add(btnCancelar);
 
         btnSalvar.addActionListener(ae -> {
-        try {
-            int id = Integer.parseInt(txtId.getText().trim());
-            Cliente cliente = (Cliente) cbCliente.getSelectedItem();
-            Veterinario veterinario = (Veterinario) cbVeterinario.getSelectedItem();
-            Animal animal = (Animal) cbAnimal.getSelectedItem();
-            String descricao = txtDescricao.getText().trim();
-            java.util.Date dataHora = null;
             try {
-                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
-                dataHora = sdf.parse(txtData.getText().trim());
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(dialog, "Data/Hora inválida. Use o formato: dd/MM/yyyy HH:mm (ex: 30/06/2025 14:30)", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (cliente == null || veterinario == null || animal == null || descricao.isEmpty()) {
-                JOptionPane.showMessageDialog(dialog, "Preencha todos os campos.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Monta os itens da consulta
-            List<ItemConsulta> itens = new java.util.ArrayList<>();
-            boolean peloMenosUm = false;
-            for (Procedimento p : procedimentosDisponiveis) {
-                JCheckBox check = mapCheck.get(p);
-                JSpinner spinner = mapSpinner.get(p);
-                if (check.isSelected()) {
-                    int qtd = (int) spinner.getValue();
-                    itens.add(new ItemConsulta(p, p.getPreco(), qtd)); // Corrigido: salva quantidade
-                    peloMenosUm = true;
+                int id = Integer.parseInt(txtId.getText().trim());
+                Cliente cliente = (Cliente) cbCliente.getSelectedItem();
+                Veterinario veterinario = (Veterinario) cbVeterinario.getSelectedItem();
+                Animal animal = (Animal) cbAnimal.getSelectedItem();
+                String descricao = txtDescricao.getText().trim();
+                java.util.Date dataHora = null;
+                try {
+                    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    dataHora = sdf.parse(txtData.getText().trim());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(dialog,
+                            "Data/Hora inválida. Use o formato: dd/MM/yyyy HH:mm (ex: 30/06/2025 14:30)",
+                            "Erro de entrada", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-            }
-            if (!peloMenosUm) {
-                JOptionPane.showMessageDialog(dialog, "Selecione pelo menos um procedimento.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (c == null) {
-                List<Consulta> consultas = banco.getConsultas().listar();
-                for (Consulta existente : consultas) {
-                    if (existente.getId() == id) {
-                        JOptionPane.showMessageDialog(dialog, "Já existe uma consulta com esse ID!", "ID duplicado", JOptionPane.ERROR_MESSAGE);
-                        return;
+                if (cliente == null || veterinario == null || animal == null || descricao.isEmpty()) {
+                    JOptionPane.showMessageDialog(dialog, "Preencha todos os campos.", "Erro de entrada",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Monta os itens da consulta
+                List<ItemConsulta> itens = new java.util.ArrayList<>();
+                boolean peloMenosUm = false;
+                for (Procedimento p : procedimentosDisponiveis) {
+                    JCheckBox check = mapCheck.get(p);
+                    JSpinner spinner = mapSpinner.get(p);
+                    if (check.isSelected()) {
+                        int qtd = (int) spinner.getValue();
+                        itens.add(new ItemConsulta(p, p.getPreco(), qtd)); // Corrigido: salva quantidade
+                        peloMenosUm = true;
                     }
                 }
-                Consulta nova = new Consulta(id, cliente, veterinario, animal, dataHora, itens, descricao);
-                banco.getConsultas().adicionar(nova);
-            } else {
-                c.setCliente(cliente);
-                c.setVeterinario(veterinario);
-                c.setAnimal(animal);
-                c.setDataHora(dataHora);
-                c.setDescricao(descricao);
-                c.setItens(itens);
-                banco.getConsultas().atualizar(c);
+                if (!peloMenosUm) {
+                    JOptionPane.showMessageDialog(dialog, "Selecione pelo menos um procedimento.", "Erro de entrada",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (c == null) {
+                    List<Consulta> consultas = banco.getConsultas().listar();
+                    for (Consulta existente : consultas) {
+                        if (existente.getId() == id) {
+                            JOptionPane.showMessageDialog(dialog, "Já existe uma consulta com esse ID!", "ID duplicado",
+                                    JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+                    Consulta nova = new Consulta(id, cliente, veterinario, animal, dataHora, itens, descricao);
+                    banco.getConsultas().adicionar(nova);
+                } else {
+                    c.setCliente(cliente);
+                    c.setVeterinario(veterinario);
+                    c.setAnimal(animal);
+                    c.setDataHora(dataHora);
+                    c.setDescricao(descricao);
+                    c.setItens(itens);
+                    banco.getConsultas().atualizar(c);
+                }
+                atualizarTabela();
+                dialog.dispose();
+                JOptionPane.showMessageDialog(this, "Operação realizada com sucesso.", "Sucesso",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(dialog, "ID deve ser um número.", "Erro de entrada",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (IdInexistenteExcecao ex) {
+                JOptionPane.showMessageDialog(dialog, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
-            atualizarTabela();
-            dialog.dispose();
-            JOptionPane.showMessageDialog(this, "Operação realizada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(dialog, "ID deve ser um número.", "Erro de entrada", JOptionPane.ERROR_MESSAGE);
-        } catch (IdInexistenteExcecao ex) {
-            JOptionPane.showMessageDialog(dialog, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    });
+        });
         btnCancelar.addActionListener(ae -> dialog.dispose());
 
         dialog.setVisible(true);
