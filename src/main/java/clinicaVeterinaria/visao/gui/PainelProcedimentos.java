@@ -7,11 +7,14 @@ import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PainelProcedimentos extends JPanel {
     private final BancoDeDados banco;
     private final JPanel painelCards = new JPanel();
     private final JScrollPane scroll;
+    private JTextField campoPesquisa;
 
     public PainelProcedimentos(BancoDeDados banco) {
         this.banco = banco;
@@ -33,30 +36,69 @@ public class PainelProcedimentos extends JPanel {
         scroll = new JScrollPane(painelCards);
         scroll.getVerticalScrollBar().setUnitIncrement(16);
 
-        // Botão novo
+        // Barra de pesquisa
+        JPanel painelPesquisa = new JPanel(new BorderLayout());
+        painelPesquisa.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        campoPesquisa = new JTextField();
+        campoPesquisa.setToolTipText("Pesquisar por nome ou ID do procedimento");
+
+        JButton btnPesquisar = new JButton("Pesquisar");
+        JButton btnLimpar = new JButton("Limpar");
+
+        JPanel painelBotoesPesquisa = new JPanel();
+        painelBotoesPesquisa.add(btnPesquisar);
+        painelBotoesPesquisa.add(btnLimpar);
+
+        painelPesquisa.add(new JLabel("Pesquisar:"), BorderLayout.WEST);
+        painelPesquisa.add(campoPesquisa, BorderLayout.CENTER);
+        painelPesquisa.add(painelBotoesPesquisa, BorderLayout.EAST);
+        painelPesquisa.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+
         JButton btnNovo = new JButton("Novo Procedimento");
         JPanel botoes = new JPanel();
         botoes.add(btnNovo);
 
-        // barra de pesquisa
-
-        
-
         add(header, BorderLayout.NORTH);
+        add(painelPesquisa, BorderLayout.BEFORE_FIRST_LINE);
         add(scroll, BorderLayout.CENTER);
         add(botoes, BorderLayout.SOUTH);
 
         btnNovo.addActionListener(e -> abrirFormulario(null));
+
+        // Pesquisa
+        btnPesquisar.addActionListener(e -> atualizarCardsFiltro());
+        btnLimpar.addActionListener(e -> {
+            campoPesquisa.setText("");
+            atualizarCards();
+        });
+
         atualizarCards();
     }
+
+    // Atualiza cards sem filtro (todos)
     private void atualizarCards() {
+        atualizarCardsFiltro();
+    }
+
+    // Atualiza cards com filtro se houver
+    private void atualizarCardsFiltro() {
         painelCards.removeAll();
-        
+
+        String filtro = campoPesquisa.getText().trim().toLowerCase();
+        List<Procedimento> lista = banco.getProcedimentos().listar();
+
+        if (!filtro.isEmpty()) {
+            lista = lista.stream()
+                .filter(p -> String.valueOf(p.getId()).equals(filtro)
+                          || p.getNome().toLowerCase().contains(filtro))
+                .collect(Collectors.toList());
+        }
+
         JPanel linhaAtual = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 20));
         painelCards.add(linhaAtual);
-        
+
         int contador = 0;
-        for (Procedimento p : banco.getProcedimentos().listar()) {
+        for (Procedimento p : lista) {
             if (contador > 0 && contador % 7 == 0) {    
                 linhaAtual = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 20));
                 painelCards.add(linhaAtual);
@@ -64,7 +106,7 @@ public class PainelProcedimentos extends JPanel {
             linhaAtual.add(criarCard(p));
             contador++;
         }
-        
+
         painelCards.revalidate();
         painelCards.repaint();
     }
@@ -73,8 +115,7 @@ public class PainelProcedimentos extends JPanel {
         JPanel card = new JPanel(new BorderLayout());
         card.setPreferredSize(new Dimension(200, 180));
         card.setMaximumSize(new Dimension(200, 180));
-        card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),BorderFactory.createEmptyBorder(15, 15, 15, 15)
-        ));
+        card.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),BorderFactory.createEmptyBorder(15, 15, 15, 15)));
         card.setBackground(Color.WHITE);
 
         JLabel lblNome = new JLabel(p.getNome(), SwingConstants.CENTER);
@@ -103,7 +144,7 @@ public class PainelProcedimentos extends JPanel {
     private void excluirProcedimento(Procedimento p) {
         try {
             banco.getProcedimentos().remover(p.getId());
-            atualizarCards();
+            atualizarCardsFiltro();
             JOptionPane.showMessageDialog(this, "Procedimento removido.",
                     "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (IdInexistenteExcecao ex) {
@@ -164,7 +205,7 @@ public class PainelProcedimentos extends JPanel {
                     banco.getProcedimentos().atualizar(new Procedimento(id, nome, preco));
                 }
 
-                atualizarCards();
+                atualizarCardsFiltro();
                 dialog.dispose();
                 JOptionPane.showMessageDialog(this, "Operação realizada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } catch (NumberFormatException ex) {
