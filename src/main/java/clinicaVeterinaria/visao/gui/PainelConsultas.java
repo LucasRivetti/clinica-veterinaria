@@ -6,8 +6,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -292,16 +294,22 @@ public class PainelConsultas extends JPanel {
     JScrollPane scroll = new JScrollPane(area);
     scroll.setPreferredSize(new Dimension(350, 120));
     JOptionPane.showMessageDialog(this, scroll, "Procedimentos", JOptionPane.INFORMATION_MESSAGE);
-}
-
-
+    }
+    
     private void abrirFormulario(Consulta c) { // Abre um formulário para adicionar ou editar uma consulta
         Frame frame = JOptionPane.getFrameForComponent(this);
         JDialog dialog = new JDialog(frame, c == null ? "Nova Consulta" : "Editar Consulta", true);
 
         dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(this);
-        dialog.setLayout(new GridLayout(10, 2, 8, 8)); // gridbaglayout mudar
+        dialog.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5); // Espaçamento entre os componentes
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 1.0;
+
+        int row = 0;
 
         JTextField txtId = new JTextField(c == null ? "" : String.valueOf(c.getId()));
         txtId.setEnabled(c == null);
@@ -325,7 +333,7 @@ public class PainelConsultas extends JPanel {
         }
 
         JComboBox<Animal> cbAnimal = new JComboBox<>();
-        cbAnimal.setEnabled(false); // Desabilita inicialmente
+        cbAnimal.setEnabled(false); //Desabilita inicialmente
 
         // Preenche animais do cliente selecionado
         cbCliente.addActionListener(e -> {
@@ -340,7 +348,7 @@ public class PainelConsultas extends JPanel {
                 }
                 cbAnimal.setEnabled(cbAnimal.getItemCount() > 0);
             } else {
-                cbAnimal.setEnabled(false);
+                cbAnimal.setEnabled(false); 
             }
         });
 
@@ -354,8 +362,7 @@ public class PainelConsultas extends JPanel {
         }
 
         // Formatação da data/hora
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        String dataAtual = LocalDateTime.now().format(formatter);
+        String dataAtual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 
         JTextField txtData = new JTextField(
                 c == null || c.getDataHora() == null ? dataAtual
@@ -397,7 +404,7 @@ public class PainelConsultas extends JPanel {
             mapSpinner.put(p, spinner);
         }
         JScrollPane scrollProcedimentos = new JScrollPane(painelProcedimentos);
-        scrollProcedimentos.setPreferredSize(new Dimension(350, 120));
+        scrollProcedimentos.setPreferredSize(new Dimension(350, 400));
 
         JLabel lblValorTotal = new JLabel("Valor Total: R$ 0.00");
         Runnable atualizarTotal = () -> {
@@ -420,27 +427,64 @@ public class PainelConsultas extends JPanel {
         }
         atualizarTotal.run();
 
-        dialog.add(new JLabel("ID:"));
-        dialog.add(txtId);
-        dialog.add(new JLabel("Cliente:"));
-        dialog.add(cbCliente);
-        dialog.add(new JLabel("Veterinário:"));
-        dialog.add(cbVeterinario);
-        dialog.add(new JLabel("Animal:"));
-        dialog.add(cbAnimal);
-        dialog.add(new JLabel("Data/Hora:"));
-        dialog.add(txtData);
-        dialog.add(new JLabel("Descrição:"));
-        dialog.add(txtDescricao);
-        dialog.add(new JLabel("Procedimentos (marque e defina a quantidade):"));
-        dialog.add(scrollProcedimentos);
-        dialog.add(lblValorTotal);
-        dialog.add(new JLabel());
+        // Adicionando os componentes ao dialog usando GridBagLayout
+        gbc.weightx = 0;
+        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("ID:"), gbc);
+        gbc.weightx = 1;
+        gbc.gridx = 1; dialog.add(txtId, gbc); row++;
 
+        gbc.weightx = 0;
+        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Cliente:"), gbc);
+        gbc.weightx = 1;
+        gbc.gridx = 1; dialog.add(cbCliente, gbc); row++;
+
+        gbc.weightx = 0;
+        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Veterinário:"), gbc);
+        gbc.weightx = 1;
+        gbc.gridx = 1; dialog.add(cbVeterinario, gbc); row++;
+
+        gbc.weightx = 0;
+        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Animal:"), gbc);
+        gbc.weightx = 1;
+        gbc.gridx = 1; dialog.add(cbAnimal, gbc); row++;
+
+        gbc.weightx = 0;
+        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Data/Hora:"), gbc);
+        gbc.weightx = 1;
+        gbc.gridx = 1; dialog.add(txtData, gbc); row++;
+
+        gbc.weightx = 0;
+        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Descrição:"), gbc);
+        gbc.weightx = 1;
+        gbc.gridx = 1; dialog.add(txtDescricao, gbc); row++;
+
+        gbc.weightx = 0;
+        gbc.weighty = 0;
+        gbc.gridx = 0; gbc.gridy = row; gbc.anchor = GridBagConstraints.NORTHWEST;
+        dialog.add(new JLabel("Procedimentos (marque e defina a quantidade):"), gbc);
+
+        gbc.weightx = 1;
+        gbc.weighty = 1; // <-- permite crescer
+        gbc.gridx = 1;
+        gbc.fill = GridBagConstraints.BOTH; // <-- permite crescer
+        dialog.add(scrollProcedimentos, gbc);
+        gbc.weighty = 0; // <-- volta ao padrão
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        row++;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        gbc.weightx = 0;
+        gbc.gridx = 0; gbc.gridy = row; dialog.add(lblValorTotal, gbc);
+
+        // Botões
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnSalvar = new JButton("Salvar");
         JButton btnCancelar = new JButton("Cancelar");
-        dialog.add(btnSalvar);
-        dialog.add(btnCancelar);
+        painelBotoes.add(btnSalvar);
+        painelBotoes.add(btnCancelar);
+
+        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.EAST;
+        dialog.add(painelBotoes, gbc);
 
         btnSalvar.addActionListener(ae -> {
             try {
