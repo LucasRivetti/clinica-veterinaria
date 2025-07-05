@@ -1,13 +1,32 @@
 package clinicaVeterinaria.visao.gui;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import java.awt.*;
-import java.util.List;
-
-import clinicaVeterinaria.modelo.Cliente;
 import clinicaVeterinaria.modelo.Veterinario;
 import clinicaVeterinaria.persistencia.BancoDeDados;
 import clinicaVeterinaria.persistencia.IdInexistenteExcecao;
@@ -168,7 +187,7 @@ public class PainelVeterinarios extends JPanel {
         modeloTabela.setRowCount(0);
         List<Veterinario> lista = banco.getVeterinarios().listar();
         for (Veterinario c : lista) {
-            Object[] linha = { c.getId(), c.getNome(), c.getTelefone(), c.getEspecialidade(), c.getCrmv(), c.getEmail() };
+            Object[] linha = { c.getId(), c.getNome(), c.getTelefone(), c.getEmail(), c.getCrmv(), c.getEspecialidade() };
             modeloTabela.addRow(linha);
         }
     }

@@ -273,27 +273,27 @@ public class PainelConsultas extends JPanel {
         }
     }
     private void exibirProcedimentos(Consulta consulta) {
-    if (consulta == null || consulta.getItens().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Nenhum procedimento registrado para esta consulta.", "Procedimentos", JOptionPane.INFORMATION_MESSAGE);
-        return;
-    }
-    StringBuilder sb = new StringBuilder();
-    sb.append("Procedimentos da Consulta:\n\n");
-    for (ItemConsulta item : consulta.getItens()) {
-        sb.append("- ")
-          .append(item.getProcedimento().getNome())
-          .append(" | Qtd: ").append(item.getQuantidade())
-          .append(" | Valor un.: R$ ")
-          .append(String.format("%.2f", item.getProcedimento().getPreco()))
-          .append("\n");
-    }
-    JTextArea area = new JTextArea(sb.toString());
-    area.setEditable(false);
-    area.setLineWrap(true);
-    area.setWrapStyleWord(true);
-    JScrollPane scroll = new JScrollPane(area);
-    scroll.setPreferredSize(new Dimension(350, 120));
-    JOptionPane.showMessageDialog(this, scroll, "Procedimentos", JOptionPane.INFORMATION_MESSAGE);
+        if (consulta == null || consulta.getItens().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nenhum procedimento registrado para esta consulta.", "Procedimentos", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Procedimentos da Consulta:\n\n");
+        for (ItemConsulta item : consulta.getItens()) {
+            sb.append("- ")
+            .append(item.getProcedimento().getNome())
+            .append(" | Qtd: ").append(item.getQuantidade())
+            .append(" | Valor un.: R$ ")
+            .append(String.format("%.2f", item.getProcedimento().getPreco()))
+            .append("\n");
+        }
+        JTextArea area = new JTextArea(sb.toString());
+        area.setEditable(false);
+        area.setLineWrap(true);
+        area.setWrapStyleWord(true);
+        JScrollPane scroll = new JScrollPane(area);
+        scroll.setPreferredSize(new Dimension(350, 120));
+        JOptionPane.showMessageDialog(this, scroll, "Procedimentos", JOptionPane.INFORMATION_MESSAGE);
     }
     
     private void abrirFormulario(Consulta c) { // Abre um formulário para adicionar ou editar uma consulta
@@ -348,7 +348,7 @@ public class PainelConsultas extends JPanel {
                 }
                 cbAnimal.setEnabled(cbAnimal.getItemCount() > 0);
             } else {
-                cbAnimal.setEnabled(false); 
+                cbAnimal.setEnabled(false);
             }
         });
 
