@@ -212,7 +212,8 @@ public class PainelConsultas extends JPanel {
                 JOptionPane.showMessageDialog(this, "Selecione uma consulta para visualizar os procedimentos.", "Aviso",
                         JOptionPane.WARNING_MESSAGE);
             } else {
-                int id = (int) modeloTabela.getValueAt(linha, 0);
+                int modelRow = tabela.convertRowIndexToModel(linha); // Corrige o índice para o modelo
+                int id = (int) modeloTabela.getValueAt(modelRow, 0); // Usa o índice do modelo para buscar o ID
                 try {
                     Consulta consulta = banco.getConsultas().buscarPorId(id);
                     exibirProcedimentos(consulta);
