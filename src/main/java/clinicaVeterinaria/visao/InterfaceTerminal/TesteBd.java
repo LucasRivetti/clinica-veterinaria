@@ -25,25 +25,25 @@ public class TesteBd {
 
         Procedimento procVacina = new Procedimento(1, "Vacinação antirrábica", 80.0);
         Procedimento procExame = new Procedimento(2, "Exame de sangue", 120.0);
-        banco.getProcedimentos().adicionar(new Procedimento(3, "Castração - Cães pequenos", 350.0));
-        banco.getProcedimentos().adicionar(new Procedimento(4, "Castração - Cães grandes", 450.0));
-        banco.getProcedimentos().adicionar(new Procedimento(5, "Castração - Gatos", 300.0));
-        banco.getProcedimentos().adicionar(new Procedimento(6, "Exame de sangue completo", 180.0));
-        banco.getProcedimentos().adicionar(new Procedimento(7, "Ultrassonografia", 250.0));
-        banco.getProcedimentos().adicionar(new Procedimento(8, "Raio-X", 150.0));
-        banco.getProcedimentos().adicionar(new Procedimento(9, "Limpeza dentária", 200.0));
-        banco.getProcedimentos().adicionar(new Procedimento(10, "Cirurgia de fratura", 800.0));
-        banco.getProcedimentos().adicionar(new Procedimento(11, "Internação diária", 100.0));
-        banco.getProcedimentos().adicionar(new Procedimento(12, "Vacina V8/V10", 90.0));
-        banco.getProcedimentos().adicionar(new Procedimento(13, "Vacina contra leishmaniose", 120.0));
-        banco.getProcedimentos().adicionar(new Procedimento(14, "Microchipagem", 150.0));
-        banco.getProcedimentos().adicionar(new Procedimento(15, "Banho e tosa - Pequeno", 60.0));
-        banco.getProcedimentos().adicionar(new Procedimento(16, "Banho e tosa - Grande", 90.0));
-        banco.getProcedimentos().adicionar(new Procedimento(17, "Vermifugação", 45.0));
-        banco.getProcedimentos().adicionar(new Procedimento(18, "Aplicação de antipulgas", 70.0));
-        banco.getProcedimentos().adicionar(new Procedimento(19, "Curativo pós-operatório", 55.0));
-        banco.getProcedimentos().adicionar(new Procedimento(20, "Teste de FIV/FeLV (gatos)", 130.0));
-        banco.getProcedimentos().adicionar(new Procedimento(21, "Eutanásia humanitária", 200.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(3, "Castração - Cães pequenos", 350.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(4, "Castração - Cães grandes", 450.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(5, "Castração - Gatos", 300.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(6, "Exame de sangue completo", 180.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(7, "Ultrassonografia", 250.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(8, "Raio-X", 150.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(9, "Limpeza dentária", 200.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(10, "Cirurgia de fratura", 800.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(11, "Internação diária", 100.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(12, "Vacina V8/V10", 90.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(13, "Vacina contra leishmaniose", 120.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(14, "Microchipagem", 150.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(15, "Banho e tosa - Pequeno", 60.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(16, "Banho e tosa - Grande", 90.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(17, "Vermifugação", 45.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(18, "Aplicação de antipulgas", 70.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(19, "Curativo pós-operatório", 55.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(20, "Teste de FIV/FeLV (gatos)", 130.0));
+        //banco.getProcedimentos().adicionar(new Procedimento(21, "Eutanásia humanitária", 200.0));
 
         Cliente cliente = new Cliente(
             1,
@@ -87,11 +87,11 @@ public class TesteBd {
             "Consulta de rotina e vacinação."
         );
 
-        banco.getProcedimentos().adicionar(procVacina);
-        banco.getProcedimentos().adicionar(procExame);
-        banco.getClientes().adicionar(cliente);
-        banco.getVeterinarios().adicionar(veterinario);
-        banco.getAnimais().adicionar(animal);
-        banco.getConsultas().adicionar(consulta);
+        //banco.getProcedimentos().adicionar(procVacina);
+        //banco.getProcedimentos().adicionar(procExame);
+        //banco.getClientes().adicionar(cliente);
+        //banco.getVeterinarios().adicionar(veterinario);
+        //banco.getAnimais().adicionar(animal);
+        //banco.getConsultas().adicionar(consulta);
     }
 }

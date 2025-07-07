@@ -16,7 +16,7 @@ public class Veterinario extends Entidade {
         this.consultas = new ArrayList<>();
     }
 
-    public Veterinario(int id, String nome, String crmv, String especialidade, String telefone, String email) {
+    public Veterinario(int id, String nome, String telefone, String email, String crmv, String especialidade) {
         super(id);
         this.nome = nome;
         this.crmv = crmv;
