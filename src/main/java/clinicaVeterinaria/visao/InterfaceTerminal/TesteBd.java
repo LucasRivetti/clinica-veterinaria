@@ -57,10 +57,10 @@ public class TesteBd {
         Veterinario veterinario = new Veterinario(
             1,
             "Dra. Fernanda Lima",
-            "CRMV-12345",
-            "Clínico Geral",
             "(32)98888-7777",
-            "fernanda.vet@clinicavet.com"
+            "fernanda.vet@clinicavet.com",
+            "CRMV-12345",
+            "Clínico Geral"
         );
 
         Animal animal = new Animal(

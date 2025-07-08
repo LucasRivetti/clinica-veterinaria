@@ -364,12 +364,10 @@ public class PainelConsultas extends JPanel {
 
         // Formatação da data/hora
         String dataAtual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-
         JTextField txtData = new JTextField(
-                c == null || c.getDataHora() == null ? dataAtual
-                        : new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(c.getDataHora()));
-        txtData.setToolTipText("Formato: dd/MM/yyyy HH:mm (ex: 30/06/2025 14:30)");
+        c == null || c.getDataHora() == null ? dataAtual : new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(c.getDataHora()));
 
+        
         JTextField txtDescricao = new JTextField(c == null ? "" : c.getDescricao());
 
         // Painel de procedimentos com checkboxes e spinners
@@ -381,7 +379,9 @@ public class PainelConsultas extends JPanel {
         java.util.Map<Procedimento, JSpinner> mapSpinner = new java.util.HashMap<>();
 
         for (Procedimento p : procedimentosDisponiveis) {
-            JPanel linha = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JPanel linha = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+            linha.setAlignmentX(Component.LEFT_ALIGNMENT);
+            linha.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
             JCheckBox check = new JCheckBox(p.getNome() + String.format(" (R$ %.2f)", p.getPreco()));
             JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
             spinner.setEnabled(false);
@@ -404,6 +404,7 @@ public class PainelConsultas extends JPanel {
             mapCheck.put(p, check);
             mapSpinner.put(p, spinner);
         }
+
         JScrollPane scrollProcedimentos = new JScrollPane(painelProcedimentos);
         scrollProcedimentos.setPreferredSize(new Dimension(350, 400));
 
@@ -430,46 +431,72 @@ public class PainelConsultas extends JPanel {
 
         // Adicionando os componentes ao dialog usando GridBagLayout
         gbc.weightx = 0;
-        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("ID:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        dialog.add(new JLabel("ID:"), gbc);
         gbc.weightx = 1;
-        gbc.gridx = 1; dialog.add(txtId, gbc); row++;
+        gbc.gridx = 1;
+        dialog.add(txtId, gbc);
+        row++;
 
         gbc.weightx = 0;
-        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Cliente:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        dialog.add(new JLabel("Cliente:"), gbc);
         gbc.weightx = 1;
-        gbc.gridx = 1; dialog.add(cbCliente, gbc); row++;
+        gbc.gridx = 1;
+        dialog.add(cbCliente, gbc);
+        row++;
 
         gbc.weightx = 0;
-        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Veterinário:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        dialog.add(new JLabel("Veterinário:"), gbc);
         gbc.weightx = 1;
-        gbc.gridx = 1; dialog.add(cbVeterinario, gbc); row++;
+        gbc.gridx = 1;
+        dialog.add(cbVeterinario, gbc);
+        row++;
 
         gbc.weightx = 0;
-        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Animal:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        dialog.add(new JLabel("Animal:"), gbc);
         gbc.weightx = 1;
-        gbc.gridx = 1; dialog.add(cbAnimal, gbc); row++;
+        gbc.gridx = 1;
+        dialog.add(cbAnimal, gbc);
+        row++;
 
         gbc.weightx = 0;
-        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Data/Hora:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        dialog.add(new JLabel("Data/Hora:"), gbc);
         gbc.weightx = 1;
-        gbc.gridx = 1; dialog.add(txtData, gbc); row++;
+        gbc.gridx = 1;
+        dialog.add(txtData, gbc);
+        row++;
 
         gbc.weightx = 0;
-        gbc.gridx = 0; gbc.gridy = row; dialog.add(new JLabel("Descrição:"), gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        dialog.add(new JLabel("Descrição:"), gbc);
         gbc.weightx = 1;
-        gbc.gridx = 1; dialog.add(txtDescricao, gbc); row++;
+        gbc.gridx = 1;
+        dialog.add(txtDescricao, gbc);
+        row++;
 
         gbc.weightx = 0;
         gbc.weighty = 0;
-        gbc.gridx = 0; gbc.gridy = row; gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
         dialog.add(new JLabel("Procedimentos (marque e defina a quantidade):"), gbc);
 
         gbc.weightx = 1;
-        gbc.weighty = 1; // <-- permite crescer
+        gbc.weighty = 1; 
         gbc.gridx = 1;
-        gbc.fill = GridBagConstraints.BOTH; // <-- permite crescer
+        gbc.fill = GridBagConstraints.BOTH; 
         dialog.add(scrollProcedimentos, gbc);
-        gbc.weighty = 0; // <-- volta ao padrão
+        gbc.weighty = 0; 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         row++;
         gbc.anchor = GridBagConstraints.WEST;
